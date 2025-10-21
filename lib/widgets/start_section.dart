@@ -54,9 +54,19 @@ class _MobileLayout extends StatelessWidget {
         const Spacer(),
         _WelcomeText(),
         const SizedBox(height: 40),
-        _CustomButton(text: 'Cultos'),
+        CustomRedButton(
+          text: 'Cultos',
+          onTap: () {
+            // ação ao clicar em "Cultos"
+          },
+        ),
         const SizedBox(height: 16),
-        _CustomButton(text: 'Grupos Familiares'),
+        CustomRedButton(
+          text: 'Grupos Familiares',
+          onTap: () {
+            // ação ao clicar em "Grupos Familiares"
+          },
+        ),
         const Spacer(),
       ],
     );
@@ -79,9 +89,19 @@ class _DesktopLayout extends StatelessWidget {
             children: [
               _WelcomeText(),
               const SizedBox(height: 40),
-              _CustomButton(text: 'Cultos'),
+              CustomRedButton(
+                text: 'Cultos',
+                onTap: () {
+                  // ação ao clicar em "Cultos"
+                },
+              ),
               const SizedBox(height: 16),
-              _CustomButton(text: 'Grupos Familiares'),
+              CustomRedButton(
+                text: 'Grupos Familiares',
+                onTap: () {
+                  // ação ao clicar em "Grupos Familiares"
+                },
+              ),
             ],
           ),
         ),
@@ -148,38 +168,74 @@ class _WelcomeText extends StatelessWidget {
   }
 }
 
-class _CustomButton extends StatelessWidget {
+class CustomRedButton extends StatefulWidget {
   final String text;
+  final VoidCallback onTap;
 
-  const _CustomButton({required this.text});
+  const CustomRedButton({super.key, required this.text, required this.onTap});
+
+  @override
+  State<CustomRedButton> createState() => _CustomRedButtonState();
+}
+
+class _CustomRedButtonState extends State<CustomRedButton>
+    with SingleTickerProviderStateMixin {
+  bool _isPressed = false;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {},
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          height: 56,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
+    final baseColor = Colors.red.shade700;
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+      height: 56,
+      decoration: BoxDecoration(
+        // 🔹 Efeito de profundidade ao pressionar
+        color: _isPressed ? baseColor.withOpacity(0.9) : baseColor,
+        borderRadius: BorderRadius.circular(14),
+        gradient: LinearGradient(
+          colors: _isPressed
+              ? [baseColor.withOpacity(0.8), baseColor.withOpacity(0.6)]
+              : [baseColor, Colors.red.shade400],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          if (!_isPressed)
+            BoxShadow(
+              color: baseColor.withOpacity(0.4),
+              blurRadius: 10,
+              offset: const Offset(0, 6),
+            ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(14),
+          splashColor: Colors.white.withOpacity(0.2),
+          highlightColor: Colors.white.withOpacity(0.1),
+          onTapDown: (_) => setState(() => _isPressed = true),
+          onTapUp: (_) => setState(() => _isPressed = false),
+          onTapCancel: () => setState(() => _isPressed = false),
+          onTap: widget.onTap,
+          child: Center(
+            child: Text(
+              widget.text.toUpperCase(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.2,
+                shadows: [
+                  Shadow(
+                    offset: Offset(1, 1),
+                    blurRadius: 3,
+                    color: Colors.black38,
+                  ),
+                ],
               ),
-            ],
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            text,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
             ),
           ),
         ),

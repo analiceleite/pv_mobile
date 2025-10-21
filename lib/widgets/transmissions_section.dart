@@ -14,6 +14,8 @@ class TransmissionsSection extends StatelessWidget {
         'description':
             'Música gospel, pregações inspiradoras e programas especiais que edificam sua fé.',
         'button': 'Ouvir agora',
+        'gradient': [const Color(0xFF1F2937), const Color(0xFF374151)],
+        // Dark Gray
         'onPressed': () {},
       },
       {
@@ -22,6 +24,8 @@ class TransmissionsSection extends StatelessWidget {
         'description':
             'Assista aos cultos, estudos bíblicos e eventos especiais transmitidos diretamente do templo. Live todo domingo às 18h30.',
         'button': 'Assistir Live',
+        'gradient': [const Color(0xFF111827), const Color(0xFF1F2937)],
+        // Very Dark Gray
         'onPressed': () {},
       },
       {
@@ -30,6 +34,8 @@ class TransmissionsSection extends StatelessWidget {
         'description':
             'Receba mensagens inspiradoras, transmissões ao vivo e eventos direto na sua timeline.',
         'button': 'Seguir no Facebook',
+        'gradient': [const Color(0xFF374151), const Color(0xFF4B5563)],
+        // Medium Gray
         'onPressed': () {},
       },
       {
@@ -38,28 +44,73 @@ class TransmissionsSection extends StatelessWidget {
         'description':
             'Veja fotos dos cultos, bastidores e momentos especiais da nossa família em Cristo.',
         'button': 'Seguir no Instagram',
+        'gradient': [const Color(0xFF4B5563), const Color(0xFF6B7280)],
+        // Light Gray
         'onPressed': () {},
       },
     ];
 
     return Container(
-      color: Colors.grey[200],
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.grey.shade100, Colors.white, Colors.grey.shade100],
+        ),
+      ),
+      padding: EdgeInsets.symmetric(
+        vertical: 60,
+        horizontal: isMobile ? 24 : 48,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text(
-            'Transmissões',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+          // Cabeçalho
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.grey.shade700, Colors.grey.shade900],
+              ),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  blurRadius: 15,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: const Text(
+              'CONECTE-SE CONOSCO',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2,
+              ),
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 20),
+          const Text(
+            'Mídias & Transmissões',
+            style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF111827),
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Acompanhe nossa programação 24 horas',
+            style: TextStyle(fontSize: 18, color: Colors.grey.shade700),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 50),
 
-          // Layout responsivo: Grid em telas grandes, coluna em mobile
+          // Cards
           isMobile
               ? Column(
                   children: items
@@ -76,7 +127,7 @@ class TransmissionsSection extends StatelessWidget {
                   runSpacing: 24,
                   alignment: WrapAlignment.center,
                   children: items
-                      .map((item) => _buildCard(item, context, width: 280))
+                      .map((item) => _buildCard(item, context, width: 300))
                       .toList(),
                 ),
         ],
@@ -84,7 +135,6 @@ class TransmissionsSection extends StatelessWidget {
     );
   }
 
-  // 🧱 Card de cada transmissão
   Widget _buildCard(
     Map<String, dynamic> item,
     BuildContext context, {
@@ -92,54 +142,120 @@ class TransmissionsSection extends StatelessWidget {
   }) {
     return Container(
       width: width,
-      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.grey.withOpacity(0.15),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+            spreadRadius: 2,
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(item['icon'] as IconData, size: 48, color: Colors.black87),
-          const SizedBox(height: 16),
-          Text(
-            item['title'] as String,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            item['description'] as String,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.black54,
-              height: 1.4,
-            ),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
-              minimumSize: const Size(double.infinity, 48),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+          // Header com gradiente
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: item['gradient'] as List<Color>,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
               ),
             ),
-            onPressed: item['onPressed'] as void Function(),
-            child: Text(
-              item['button'] as String,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.25),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Icon(
+                    item['icon'] as IconData,
+                    size: 32,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  item['title'] as String,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Conteúdo
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item['description'] as String,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey.shade700,
+                    height: 1.6,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                GestureDetector(
+                  onTap: item['onPressed'] as void Function(),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: item['gradient'] as List<Color>,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: (item['gradient'] as List<Color>)[0]
+                              .withOpacity(0.4),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          item['button'] as String,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(
+                          Icons.arrow_forward_rounded,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

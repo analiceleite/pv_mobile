@@ -129,35 +129,101 @@ class PicturesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Icon(Icons.cloud, color: Colors.black, size: 60),
-        const SizedBox(height: 12),
-        const Text(
-          'Fotos dos Cultos',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 20),
-        ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            foregroundColor: Colors.white,
-            minimumSize: const Size(200, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.grey.shade700, Colors.grey.shade900],
+            ),
+            borderRadius: BorderRadius.circular(25),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                blurRadius: 15,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: const Text(
+            'FOTOS',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2,
             ),
           ),
-          onPressed: () async {
-            const url = 'https://drive.google.com/drive/fotos-igreja';
-            if (await canLaunchUrl(Uri.parse(url))) {
-              await launchUrl(
-                Uri.parse(url),
-                mode: LaunchMode.externalApplication,
-              );
-            }
-          },
-          icon: const Icon(Icons.photo_album),
-          label: const Text('Ver Fotos no Drive'),
         ),
+        const SizedBox(height: 20),
+        const Text(
+          'Galeria de Fotos',
+          style: TextStyle(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF111827),
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 12),
+        Text(
+          'Acesse as fotos dos nossos cultos e eventos',
+          style: TextStyle(fontSize: 18, color: Colors.grey.shade700),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 50),
+
+        // 🔹 Bloco com ícone e botão
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              const Icon(Icons.cloud, color: Colors.black, size: 60),
+              const SizedBox(height: 12),
+              const Text(
+                'Fotos dos Cultos',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(200, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () async {
+                  const url = 'https://drive.google.com/drive/fotos-igreja';
+                  if (await canLaunchUrl(Uri.parse(url))) {
+                    await launchUrl(
+                      Uri.parse(url),
+                      mode: LaunchMode.externalApplication,
+                    );
+                  }
+                },
+                icon: const Icon(Icons.photo_album),
+                label: const Text('Ver Fotos no Drive'),
+              ),
+            ],
+          ),
+        ),
+
         const SizedBox(height: 32),
+
+        // 🔹 Bloco com tutorial
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(

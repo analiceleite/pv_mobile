@@ -12,7 +12,7 @@ class AgendaSection extends StatelessWidget {
         'titulo': 'Culto de Celebração',
         'descricao': 'Momento de adoração, louvor e palavra',
         'icon': Icons.church,
-        'color': const Color(0xFF6366F1), // Indigo
+        'color': Colors.red.shade800,
       },
       {
         'dia': 'Quarta-feira',
@@ -21,7 +21,7 @@ class AgendaSection extends StatelessWidget {
         'descricao':
             'Tempo de comunhão com as famílias (consultar grupos locais)',
         'icon': Icons.groups,
-        'color': const Color(0xFF10B981), // Green
+        'color': Colors.red.shade800,
       },
       {
         'dia': 'Quinta-feira',
@@ -29,7 +29,7 @@ class AgendaSection extends StatelessWidget {
         'titulo': 'Oração e Edificação',
         'descricao': 'Momento de intercessão e crescimento espiritual',
         'icon': Icons.favorite,
-        'color': const Color(0xFFEC4899), // Pink
+        'color': Colors.red.shade800,
       },
     ];
 
@@ -49,51 +49,51 @@ class AgendaSection extends StatelessWidget {
         vertical: 60,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Cabeçalho
-          Center(
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Text(
-                    'PROGRAMAÇÃO',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Horários Semanais',
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Venha participar dos nossos encontros',
-                  style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
-                  textAlign: TextAlign.center,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.grey.shade700, Colors.grey.shade900],
+              ),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  blurRadius: 15,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
+            child: const Text(
+              'PROGRAMAÇÃO',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2,
+              ),
+            ),
           ),
-          const SizedBox(height: 48),
+          const SizedBox(height: 20),
+          const Text(
+            'Agenda Semanal',
+            style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF111827),
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Participe dos nossos encontros e atividades',
+            style: TextStyle(fontSize: 18, color: Colors.grey.shade700),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 50),
 
           // Lista de cultos
           if (isMobile)
