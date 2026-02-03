@@ -1,38 +1,13 @@
 import 'package:flutter/material.dart';
+import '../models/culto.dart';
+import '../services/culto_service.dart';
 
 class AgendaSection extends StatelessWidget {
   const AgendaSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cultos = [
-      {
-        'dia': 'Domingo',
-        'horario': '18h30',
-        'titulo': 'Culto de Celebração',
-        'descricao': 'Momento de adoração, louvor e palavra',
-        'icon': Icons.church,
-        'color': Colors.red.shade800,
-      },
-      {
-        'dia': 'Quarta-feira',
-        'horario': '19h30',
-        'titulo': 'Grupos Familiares',
-        'descricao':
-            'Tempo de comunhão com as famílias (consultar grupos locais)',
-        'icon': Icons.groups,
-        'color': Colors.red.shade800,
-      },
-      {
-        'dia': 'Quinta-feira',
-        'horario': '20h',
-        'titulo': 'Oração e Edificação',
-        'descricao': 'Momento de intercessão e crescimento espiritual',
-        'icon': Icons.favorite,
-        'color': Colors.red.shade800,
-      },
-    ];
-
+    final cultoService = CultoService();
     final isMobile = MediaQuery.of(context).size.width < 600;
 
     return Container(
@@ -95,21 +70,48 @@ class AgendaSection extends StatelessWidget {
           ),
           const SizedBox(height: 50),
 
-          // Lista de cultos
-          if (isMobile)
-            ...cultos.map((c) => _buildMobileCard(c))
-          else
-            Wrap(
-              spacing: 24,
-              runSpacing: 24,
-              children: cultos.map((c) => _buildDesktopCard(c)).toList(),
-            ),
+          // Lista de cultos com StreamBuilder
+          StreamBuilder<List<Culto>>(
+            stream: cultoService.getCultosStream(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    'Erro ao carregar cultos',
+                    style: TextStyle(color: Colors.red.shade700),
+                  ),
+                );
+              }
+
+              final cultos = snapshot.data ?? [];
+
+              if (cultos.isEmpty) {
+                return const Center(child: Text('Nenhum culto cadastrado'));
+              }
+
+              if (isMobile) {
+                return Column(
+                  children: cultos.map((c) => _buildMobileCard(c)).toList(),
+                );
+              } else {
+                return Wrap(
+                  spacing: 24,
+                  runSpacing: 24,
+                  children: cultos.map((c) => _buildDesktopCard(c)).toList(),
+                );
+              }
+            },
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildMobileCard(Map<String, dynamic> culto) {
+  Widget _buildMobileCard(Culto culto) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
@@ -130,7 +132,7 @@ class AgendaSection extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: culto['color'] as Color,
+              color: culto.getColor(),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
@@ -144,11 +146,7 @@ class AgendaSection extends StatelessWidget {
                     color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(
-                    culto['icon'] as IconData,
-                    color: Colors.white,
-                    size: 28,
-                  ),
+                  child: Icon(culto.getIcon(), color: Colors.white, size: 28),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -156,7 +154,7 @@ class AgendaSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        culto['dia']!,
+                        culto.dia,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -173,7 +171,7 @@ class AgendaSection extends StatelessWidget {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            culto['horario']!,
+                            culto.horario,
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
@@ -196,7 +194,7 @@ class AgendaSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  culto['titulo']!,
+                  culto.titulo,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -205,7 +203,7 @@ class AgendaSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  culto['descricao']!,
+                  culto.descricao,
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey.shade600,
@@ -220,7 +218,7 @@ class AgendaSection extends StatelessWidget {
     );
   }
 
-  Widget _buildDesktopCard(Map<String, dynamic> culto) {
+  Widget _buildDesktopCard(Culto culto) {
     return Container(
       width: 350,
       decoration: BoxDecoration(
@@ -241,7 +239,7 @@ class AgendaSection extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: culto['color'] as Color,
+              color: culto.getColor(),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
@@ -257,14 +255,14 @@ class AgendaSection extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
-                    culto['icon'] as IconData,
+                    culto.getIcon(),
                     color: Colors.white,
                     size: 32,
                   ),
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  culto['dia']!,
+                  culto.dia,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -281,7 +279,7 @@ class AgendaSection extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      culto['horario']!,
+                      culto.horario,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -301,7 +299,7 @@ class AgendaSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  culto['titulo']!,
+                  culto.titulo,
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -310,7 +308,7 @@ class AgendaSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  culto['descricao']!,
+                  culto.descricao,
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey.shade600,

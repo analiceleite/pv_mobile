@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'config/firebase_config.dart';
 import 'pages/home_page.dart';
 import 'theme/app_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FirebaseConfig.initialize();
   runApp(const PalavraDaVidaApp());
 }
 

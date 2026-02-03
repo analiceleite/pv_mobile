@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "243931898220",
+    "project_id": "igreja-pv-mobile",
+    "storage_bucket": "igreja-pv-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243931898220:android:101b09f5d9e57c2ace1349",
+        "android_client_info": {
+          "package_name": "igrejapv.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWm4d1xGK1ucgbAhzw1OLdAbKrvQ5v1KQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../models/grupo_familiar.dart';
+import '../services/grupo_familiar_service.dart';
 
 class GroupsSection extends StatefulWidget {
   const GroupsSection({super.key});
@@ -10,37 +12,40 @@ class GroupsSection extends StatefulWidget {
 
 class _GroupsSectionState extends State<GroupsSection> {
   final TextEditingController _searchController = TextEditingController();
+  final GrupoFamiliarService _grupoService = GrupoFamiliarService();
   String _searchText = '';
+  List<GrupoFamiliar> _allGroups = [];
+  List<GrupoFamiliar> _filteredGroups = [];
 
-  final List<Map<String, Object>> _grupos = [
-    {
-      'nome': 'Grupo Central',
-      'endereco': 'Rua das Flores, 123',
-      'lider': 'Carlos e Ana',
-      'horario': 'Terça-feira, 20h',
-      'whatsapp': 'https://wa.me/5591999999999',
-      'icon': Icons.location_city,
-      'color': Color(0xFF1F2937),
-    },
-    {
-      'nome': 'Grupo Norte',
-      'endereco': 'Av. Esperança, 500',
-      'lider': 'João e Marta',
-      'horario': 'Quinta-feira, 19h30',
-      'whatsapp': 'https://wa.me/5591888888888',
-      'icon': Icons.home,
-      'color': Color(0xFF374151),
-    },
-    {
-      'nome': 'Grupo Sul',
-      'endereco': 'Rua Paz, 45',
-      'lider': 'Ricardo e Paula',
-      'horario': 'Sábado, 18h',
-      'whatsapp': 'https://wa.me/5591777777777',
-      'icon': Icons.home_work,
-      'color': Color(0xFF4B5563),
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadGroups();
+  }
+
+  Future<void> _loadGroups() async {
+    final groups = await _grupoService.getGrupos();
+    setState(() {
+      _allGroups = groups;
+      _filteredGroups = groups;
+    });
+  }
+
+  void _filterGroups(String query) {
+    setState(() {
+      _searchText = query;
+      if (query.isEmpty) {
+        _filteredGroups = _allGroups;
+      } else {
+        final lowerQuery = query.toLowerCase();
+        _filteredGroups = _allGroups.where((grupo) {
+          return grupo.nome.toLowerCase().contains(lowerQuery) ||
+              grupo.endereco.toLowerCase().contains(lowerQuery) ||
+              grupo.lider.toLowerCase().contains(lowerQuery);
+        }).toList();
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -51,21 +56,6 @@ class _GroupsSectionState extends State<GroupsSection> {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
-
-    final filteredGroups = _grupos
-        .where(
-          (g) =>
-              (g['nome'] as String).toLowerCase().contains(
-                _searchText.toLowerCase(),
-              ) ||
-              (g['endereco'] as String).toLowerCase().contains(
-                _searchText.toLowerCase(),
-              ) ||
-              (g['lider'] as String).toLowerCase().contains(
-                _searchText.toLowerCase(),
-              ),
-        )
-        .toList();
 
     return Container(
       width: double.infinity,
@@ -136,7 +126,7 @@ class _GroupsSectionState extends State<GroupsSection> {
             constraints: const BoxConstraints(maxWidth: 600),
             child: TextField(
               controller: _searchController,
-              onChanged: (value) => setState(() => _searchText = value),
+              onChanged: _filterGroups,
               decoration: InputDecoration(
                 hintText: 'Pesquisar por grupo, líder ou endereço...',
                 hintStyle: TextStyle(color: Colors.grey.shade400),
@@ -147,7 +137,7 @@ class _GroupsSectionState extends State<GroupsSection> {
                         onPressed: () {
                           setState(() {
                             _searchController.clear();
-                            _searchText = '';
+                            _filterGroups('');
                           });
                         },
                       )
@@ -176,11 +166,11 @@ class _GroupsSectionState extends State<GroupsSection> {
           const SizedBox(height: 40),
 
           // 🔸 Lista de grupos
-          if (filteredGroups.isEmpty)
+          if (_filteredGroups.isEmpty)
             _buildEmptyState()
           else if (isMobile)
             Column(
-              children: filteredGroups
+              children: _filteredGroups
                   .map(
                     (g) => Padding(
                       padding: const EdgeInsets.only(bottom: 20),
@@ -190,17 +180,18 @@ class _GroupsSectionState extends State<GroupsSection> {
                   .toList(),
             )
           else
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: filteredGroups
-                    .map(
-                      (g) => Padding(
-                        padding: const EdgeInsets.only(right: 24),
-                        child: _buildGroupCard(g),
-                      ),
-                    )
-                    .toList(),
+            SizedBox(
+              height: 480,
+              child: PageView.builder(
+                controller: PageController(viewportFraction: 0.85),
+                itemCount: _filteredGroups.length,
+                itemBuilder: (context, index) {
+                  final g = _filteredGroups[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: _buildGroupCard(g),
+                  );
+                },
               ),
             ),
         ],
@@ -209,8 +200,8 @@ class _GroupsSectionState extends State<GroupsSection> {
   }
 
   // 🔹 Card de cada grupo
-  Widget _buildGroupCard(Map<String, Object> g) {
-    final color = (g['color'] ?? const Color(0xFF1F2937)) as Color;
+  Widget _buildGroupCard(GrupoFamiliar g) {
+    final color = g.getColor();
 
     return Container(
       width: 320,
@@ -247,16 +238,12 @@ class _GroupsSectionState extends State<GroupsSection> {
                     color: Colors.white.withOpacity(0.25),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(
-                    (g['icon'] ?? Icons.group) as IconData,
-                    color: Colors.white,
-                    size: 28,
-                  ),
+                  child: Icon(g.getIcon(), color: Colors.white, size: 28),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(
-                    g['nome'] as String,
+                    g.nome,
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -274,25 +261,17 @@ class _GroupsSectionState extends State<GroupsSection> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildInfoRow(
-                  Icons.location_on,
-                  'Endereço',
-                  g['endereco'] as String,
-                ),
+                _buildInfoRow(Icons.location_on, 'Endereço', g.endereco),
                 const SizedBox(height: 16),
-                _buildInfoRow(Icons.people, 'Líder', g['lider'] as String),
+                _buildInfoRow(Icons.people, 'Líder', g.lider),
                 const SizedBox(height: 16),
-                _buildInfoRow(
-                  Icons.access_time,
-                  'Horário',
-                  g['horario'] as String,
-                ),
+                _buildInfoRow(Icons.access_time, 'Horário', g.horario),
                 const SizedBox(height: 24),
 
                 // Botão WhatsApp
                 GestureDetector(
                   onTap: () async {
-                    final url = g['whatsapp'] as String;
+                    final url = g.whatsapp;
                     if (await canLaunchUrl(Uri.parse(url))) {
                       await launchUrl(
                         Uri.parse(url),
