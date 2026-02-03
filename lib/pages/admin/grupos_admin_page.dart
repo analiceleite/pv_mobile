@@ -1,0 +1,313 @@
+import 'package:flutter/material.dart';
+import '../../models/grupo_familiar.dart';
+import '../../services/grupo_familiar_service.dart';
+import 'grupo_form_page.dart';
+
+class GruposAdminPage extends StatefulWidget {
+  const GruposAdminPage({super.key});
+
+  @override
+  State<GruposAdminPage> createState() => _GruposAdminPageState();
+}
+
+class _GruposAdminPageState extends State<GruposAdminPage> {
+  final GrupoFamiliarService _grupoService = GrupoFamiliarService();
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Gerenciar Grupos Familiares'),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _navigateToForm(context),
+        icon: const Icon(Icons.add),
+        label: const Text('Novo Grupo'),
+        backgroundColor: Colors.grey.shade800,
+      ),
+      body: Column(
+        children: [
+          // Campo de busca
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: TextField(
+              controller: _searchController,
+              onChanged: (value) => setState(() => _searchQuery = value),
+              decoration: InputDecoration(
+                hintText: 'Buscar por nome, líder ou endereço...',
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: _searchQuery.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          setState(() {
+                            _searchController.clear();
+                            _searchQuery = '';
+                          });
+                        },
+                      )
+                    : null,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ),
+
+          // Lista de grupos
+          Expanded(
+            child: StreamBuilder<List<GrupoFamiliar>>(
+              stream: _grupoService.getGruposStream(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          size: 64,
+                          color: Colors.red.shade300,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Erro ao carregar grupos',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.red.shade700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                var grupos = snapshot.data ?? [];
+
+                // Filtrar grupos se houver busca
+                if (_searchQuery.isNotEmpty) {
+                  final query = _searchQuery.toLowerCase();
+                  grupos = grupos.where((g) {
+                    return g.nome.toLowerCase().contains(query) ||
+                        g.lider.toLowerCase().contains(query) ||
+                        g.endereco.toLowerCase().contains(query);
+                  }).toList();
+                }
+
+                if (grupos.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.groups,
+                          size: 64,
+                          color: Colors.grey.shade300,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          _searchQuery.isEmpty
+                              ? 'Nenhum grupo cadastrado'
+                              : 'Nenhum grupo encontrado',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        if (_searchQuery.isEmpty)
+                          TextButton.icon(
+                            onPressed: () => _navigateToForm(context),
+                            icon: const Icon(Icons.add),
+                            label: const Text('Adicionar primeiro grupo'),
+                          ),
+                      ],
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: grupos.length,
+                  itemBuilder: (context, index) {
+                    final grupo = grupos[index];
+                    return _buildGrupoCard(context, grupo);
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGrupoCard(BuildContext context, GrupoFamiliar grupo) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Column(
+        children: [
+          // Header colorido
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: grupo.getColor(),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(grupo.getIcon(), color: Colors.white, size: 28),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    grupo.nome,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Corpo do card
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildInfoRow(Icons.location_on, grupo.endereco),
+                const SizedBox(height: 8),
+                _buildInfoRow(Icons.people, 'Líder: ${grupo.lider}'),
+                const SizedBox(height: 8),
+                _buildInfoRow(Icons.access_time, grupo.horario),
+                const SizedBox(height: 8),
+                _buildInfoRow(Icons.phone, grupo.whatsapp),
+                const SizedBox(height: 16),
+
+                // Botões de ação
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton.icon(
+                      onPressed: () => _navigateToForm(context, grupo: grupo),
+                      icon: const Icon(Icons.edit, size: 18),
+                      label: const Text('Editar'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.blue.shade700,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton.icon(
+                      onPressed: () => _confirmDelete(context, grupo),
+                      icon: const Icon(Icons.delete, size: 18),
+                      label: const Text('Excluir'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.red.shade700,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: Colors.grey.shade600),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _navigateToForm(
+    BuildContext context, {
+    GrupoFamiliar? grupo,
+  }) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => GrupoFormPage(grupo: grupo)),
+    );
+
+    if (result == true && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            grupo == null
+                ? 'Grupo criado com sucesso!'
+                : 'Grupo atualizado com sucesso!',
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+    }
+  }
+
+  Future<void> _confirmDelete(BuildContext context, GrupoFamiliar grupo) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar exclusão'),
+        content: Text('Deseja realmente excluir o grupo "${grupo.nome}"?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Excluir'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true && grupo.id != null) {
+      final success = await _grupoService.deleteGrupo(grupo.id!);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              success ? 'Grupo excluído com sucesso!' : 'Erro ao excluir grupo',
+            ),
+            backgroundColor: success ? Colors.green : Colors.red,
+          ),
+        );
+      }
+    }
+  }
+}
