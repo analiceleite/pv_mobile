@@ -169,15 +169,22 @@ class _GroupsSectionState extends State<GroupsSection> {
           if (_filteredGroups.isEmpty)
             _buildEmptyState()
           else if (isMobile)
-            Column(
-              children: _filteredGroups
-                  .map(
-                    (g) => Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: _buildGroupCard(g),
+            SizedBox(
+              height: 520,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: _filteredGroups.length,
+                itemBuilder: (context, index) {
+                  final g = _filteredGroups[index];
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      right: 16,
+                      left: index == 0 ? 0 : 0,
                     ),
-                  )
-                  .toList(),
+                    child: SizedBox(width: 280, child: _buildGroupCard(g)),
+                  );
+                },
+              ),
             )
           else
             SizedBox(
@@ -204,7 +211,6 @@ class _GroupsSectionState extends State<GroupsSection> {
     final color = g.getColor();
 
     return Container(
-      width: 320,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
