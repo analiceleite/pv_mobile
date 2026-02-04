@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
 import '../../models/culto.dart';
 import '../../services/culto_service.dart';
 import 'culto_form_page.dart';
@@ -25,7 +26,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
         onPressed: () => _navigateToForm(context),
         icon: const Icon(Icons.add),
         label: const Text('Novo Culto'),
-        backgroundColor: Colors.red.shade700,
+        backgroundColor: AppColors.primary,
       ),
       body: StreamBuilder<List<Culto>>(
         stream: _cultoService.getCultosStream(),
@@ -42,12 +43,12 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
                   Icon(
                     Icons.error_outline,
                     size: 64,
-                    color: Colors.red.shade300,
+                    color: AppColors.errorLight,
                   ),
                   const SizedBox(height: 16),
                   Text(
                     'Erro ao carregar cultos',
-                    style: TextStyle(fontSize: 18, color: Colors.red.shade700),
+                    style: TextStyle(fontSize: 18, color: AppColors.error),
                   ),
                 ],
               ),

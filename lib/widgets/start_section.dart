@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 
 class StartSection extends StatelessWidget {
   final ScrollController? scrollController;
@@ -24,7 +25,7 @@ class StartSection extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [Colors.black, Colors.black],
+            colors: [AppColors.darkBg, AppColors.darkBg],
           ),
         ),
         child: SafeArea(
@@ -160,7 +161,7 @@ class _WelcomeText extends StatelessWidget {
         Text(
           'FAÇA PARTE DA NOSSA FAMÍLIA',
           style: TextStyle(
-            color: Colors.white,
+            color: AppColors.light,
             fontSize: 48,
             fontWeight: FontWeight.bold,
             height: 1.2,
@@ -168,7 +169,7 @@ class _WelcomeText extends StatelessWidget {
               Shadow(
                 offset: const Offset(2, 2),
                 blurRadius: 8,
-                color: Colors.black.withOpacity(0.5),
+                color: AppColors.darkBg.withOpacity(0.5),
               ),
             ],
           ),
@@ -177,14 +178,14 @@ class _WelcomeText extends StatelessWidget {
         Text(
           'Uma comunidade de fé, amor e propósito',
           style: TextStyle(
-            color: Colors.white.withOpacity(0.9),
+            color: AppColors.textLightSecondary,
             fontSize: 18,
             fontWeight: FontWeight.w500,
             shadows: [
               Shadow(
                 offset: const Offset(1, 1),
                 blurRadius: 4,
-                color: Colors.black.withOpacity(0.5),
+                color: AppColors.darkBg.withOpacity(0.5),
               ),
             ],
           ),
@@ -194,7 +195,7 @@ class _WelcomeText extends StatelessWidget {
           child: Text(
             '"Porque onde estiverem dois ou três reunidos em meu nome, aí estou eu no meio deles." - Mateus 18:20',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: AppColors.textLightSecondary,
               fontSize: 18,
               fontWeight: FontWeight.w500,
               fontStyle: FontStyle.italic,
@@ -222,27 +223,29 @@ class _CustomRedButtonState extends State<CustomRedButton>
 
   @override
   Widget build(BuildContext context) {
-    final baseColor = Colors.red.shade700;
-
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
       height: 56,
       decoration: BoxDecoration(
-        // 🔹 Efeito de profundidade ao pressionar
-        color: _isPressed ? baseColor.withOpacity(0.9) : baseColor,
+        color: _isPressed
+            ? AppColors.primaryDark.withOpacity(0.9)
+            : AppColors.primary,
         borderRadius: BorderRadius.circular(14),
         gradient: LinearGradient(
           colors: _isPressed
-              ? [baseColor.withOpacity(0.8), baseColor.withOpacity(0.6)]
-              : [baseColor, Colors.red.shade400],
+              ? [
+                  AppColors.primaryDark.withOpacity(0.8),
+                  AppColors.primaryDark.withOpacity(0.6),
+                ]
+              : [AppColors.primary, Color(0xFFF87171)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
           if (!_isPressed)
             BoxShadow(
-              color: baseColor.withOpacity(0.4),
+              color: AppColors.primary.withOpacity(0.4),
               blurRadius: 10,
               offset: const Offset(0, 6),
             ),
@@ -252,8 +255,8 @@ class _CustomRedButtonState extends State<CustomRedButton>
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
-          splashColor: Colors.white.withOpacity(0.2),
-          highlightColor: Colors.white.withOpacity(0.1),
+          splashColor: AppColors.light.withOpacity(0.2),
+          highlightColor: AppColors.light.withOpacity(0.1),
           onTapDown: (_) => setState(() => _isPressed = true),
           onTapUp: (_) => setState(() => _isPressed = false),
           onTapCancel: () => setState(() => _isPressed = false),
@@ -262,7 +265,7 @@ class _CustomRedButtonState extends State<CustomRedButton>
             child: Text(
               widget.text.toUpperCase(),
               style: const TextStyle(
-                color: Colors.white,
+                color: AppColors.light,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.2,

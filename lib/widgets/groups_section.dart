@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/grupo_familiar.dart';
 import '../services/grupo_familiar_service.dart';
+import '../theme/app_colors.dart';
 
 class GroupsSection extends StatefulWidget {
   const GroupsSection({super.key});
@@ -64,7 +65,7 @@ class _GroupsSectionState extends State<GroupsSection> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Colors.white, Colors.grey.shade50],
+          colors: [AppColors.light, AppColors.lightBg],
         ),
       ),
       padding: EdgeInsets.symmetric(
@@ -78,13 +79,11 @@ class _GroupsSectionState extends State<GroupsSection> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.grey.shade700, Colors.grey.shade900],
-              ),
+              gradient: LinearGradient(colors: AppColors.greyGradient),
               borderRadius: BorderRadius.circular(25),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
+                  color: AppColors.greyWithOpacity(0.3),
                   blurRadius: 15,
                   offset: const Offset(0, 4),
                 ),
@@ -93,7 +92,7 @@ class _GroupsSectionState extends State<GroupsSection> {
             child: const Text(
               'COMUNIDADE',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.light,
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 2,
@@ -108,7 +107,7 @@ class _GroupsSectionState extends State<GroupsSection> {
             style: TextStyle(
               fontSize: 40,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF111827),
+              color: AppColors.textPrimary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -117,7 +116,7 @@ class _GroupsSectionState extends State<GroupsSection> {
           // 🔸 Descrição
           Text(
             'Encontre o grupo ideal para você e sua família',
-            style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
+            style: TextStyle(fontSize: 18, color: AppColors.textSecondary),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 40),
@@ -130,11 +129,17 @@ class _GroupsSectionState extends State<GroupsSection> {
               onChanged: _filterGroups,
               decoration: InputDecoration(
                 hintText: 'Pesquisar por grupo, líder ou endereço...',
-                hintStyle: TextStyle(color: Colors.grey.shade400),
-                prefixIcon: Icon(Icons.search, color: Colors.grey.shade600),
+                hintStyle: const TextStyle(color: AppColors.textDisabled),
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: AppColors.textSecondary,
+                ),
                 suffixIcon: _searchText.isNotEmpty
                     ? IconButton(
-                        icon: Icon(Icons.clear, color: Colors.grey.shade600),
+                        icon: const Icon(
+                          Icons.clear,
+                          color: AppColors.textSecondary,
+                        ),
                         onPressed: () {
                           setState(() {
                             _searchController.clear();
@@ -144,22 +149,25 @@ class _GroupsSectionState extends State<GroupsSection> {
                       )
                     : null,
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: AppColors.light,
                 contentPadding: const EdgeInsets.symmetric(
                   vertical: 16,
                   horizontal: 20,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: Colors.grey.shade300),
+                  borderSide: const BorderSide(color: AppColors.grey300),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: Colors.grey.shade300),
+                  borderSide: const BorderSide(color: AppColors.grey300),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: Colors.grey.shade800, width: 2),
+                  borderSide: const BorderSide(
+                    color: AppColors.primary,
+                    width: 2,
+                  ),
                 ),
               ),
             ),

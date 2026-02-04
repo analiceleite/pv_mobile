@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
 import 'package:igrejapv_mobile/pages/admin/cultos_admin_page.dart';
 import 'grupos_admin_page.dart';
 import '../../services/auth_service.dart';
@@ -33,7 +34,9 @@ class AdminHomePage extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      style: TextButton.styleFrom(foregroundColor: Colors.red),
+                      style: TextButton.styleFrom(
+                        foregroundColor: AppColors.primary,
+                      ),
                       child: const Text('Sair'),
                     ),
                   ],
@@ -55,10 +58,7 @@ class AdminHomePage extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Theme.of(context).primaryColor.withOpacity(0.1),
-              Colors.white,
-            ],
+            colors: [AppColors.primary.withOpacity(0.1), AppColors.light],
           ),
         ),
         child: SafeArea(
@@ -71,7 +71,7 @@ class AdminHomePage extends StatelessWidget {
                 const Icon(
                   Icons.admin_panel_settings,
                   size: 80,
-                  color: Colors.red,
+                  color: AppColors.primary,
                 ),
                 const SizedBox(height: 16),
                 const Text(
@@ -80,14 +80,17 @@ class AdminHomePage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF111827),
+                    color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Gerencie cultos e grupos familiares',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: AppColors.textSecondary,
+                  ),
                 ),
                 const SizedBox(height: 50),
 
@@ -97,7 +100,7 @@ class AdminHomePage extends StatelessWidget {
                   title: 'Gerenciar Cultos',
                   subtitle: 'Adicionar, editar ou remover cultos da agenda',
                   icon: Icons.church,
-                  color: Colors.red.shade700,
+                  color: AppColors.primary,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -116,7 +119,7 @@ class AdminHomePage extends StatelessWidget {
                   title: 'Gerenciar Grupos Familiares',
                   subtitle: 'Adicionar, editar ou remover grupos',
                   icon: Icons.groups,
-                  color: Colors.grey.shade800,
+                  color: AppColors.grey800,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -136,7 +139,7 @@ class AdminHomePage extends StatelessWidget {
                   label: const Text('Voltar ao Site'),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    side: BorderSide(color: Colors.grey.shade400),
+                    side: const BorderSide(color: AppColors.grey300),
                   ),
                 ),
               ],
@@ -183,25 +186,21 @@ class AdminHomePage extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF111827),
+                        color: AppColors.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
-                        color: Colors.grey.shade600,
+                        color: AppColors.textSecondary,
                       ),
                     ),
                   ],
                 ),
               ),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey.shade400,
-                size: 20,
-              ),
+              Icon(Icons.arrow_forward_ios, color: AppColors.grey300, size: 20),
             ],
           ),
         ),

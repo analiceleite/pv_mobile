@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 import '../widgets/header.dart';
 import '../widgets/start_section.dart';
 import '../widgets/transmissions_section.dart';
@@ -57,9 +58,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.darkBg,
       endDrawer: Drawer(
-        backgroundColor: Colors.black,
+        backgroundColor: AppColors.darkBg,
         child: ListView(
           padding: const EdgeInsets.only(top: 60),
           children: [
@@ -75,15 +76,15 @@ class _HomePageState extends State<HomePage> {
             _menuItem(context, 'Grupos', Icons.people, _gruposKey),
             _menuItem(context, 'Ofertas', Icons.card_giftcard, _ofertasKey),
             _menuItem(context, 'Contato', Icons.email, _contatoKey),
-            const Divider(color: Colors.grey),
+            Divider(color: AppColors.grey600),
             ListTile(
               leading: const Icon(
                 Icons.admin_panel_settings,
-                color: Colors.white,
+                color: AppColors.light,
               ),
               title: const Text(
                 'Administração',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: AppColors.light),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -137,8 +138,8 @@ class _HomePageState extends State<HomePage> {
     GlobalKey key,
   ) {
     return ListTile(
-      leading: Icon(icon, color: Colors.white),
-      title: Text(title, style: const TextStyle(color: Colors.white)),
+      leading: Icon(icon, color: AppColors.light),
+      title: Text(title, style: const TextStyle(color: AppColors.light)),
       onTap: () => _scrollToSection(key),
     );
   }

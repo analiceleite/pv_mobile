@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
 import '../../models/grupo_familiar.dart';
 import '../../services/grupo_familiar_service.dart';
 import 'grupo_form_page.dart';
@@ -33,7 +34,7 @@ class _GruposAdminPageState extends State<GruposAdminPage> {
         onPressed: () => _navigateToForm(context),
         icon: const Icon(Icons.add),
         label: const Text('Novo Grupo'),
-        backgroundColor: Colors.grey.shade800,
+        backgroundColor: AppColors.grey800,
       ),
       body: Column(
         children: [
@@ -81,14 +82,14 @@ class _GruposAdminPageState extends State<GruposAdminPage> {
                         Icon(
                           Icons.error_outline,
                           size: 64,
-                          color: Colors.red.shade300,
+                          color: AppColors.errorLight,
                         ),
                         const SizedBox(height: 16),
                         Text(
                           'Erro ao carregar grupos',
                           style: TextStyle(
                             fontSize: 18,
-                            color: Colors.red.shade700,
+                            color: AppColors.error,
                           ),
                         ),
                       ],
@@ -113,19 +114,15 @@ class _GruposAdminPageState extends State<GruposAdminPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.groups,
-                          size: 64,
-                          color: Colors.grey.shade300,
-                        ),
+                        Icon(Icons.groups, size: 64, color: AppColors.grey300),
                         const SizedBox(height: 16),
                         Text(
                           _searchQuery.isEmpty
                               ? 'Nenhum grupo cadastrado'
                               : 'Nenhum grupo encontrado',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
-                            color: Colors.grey.shade600,
+                            color: AppColors.textSecondary,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -175,13 +172,13 @@ class _GruposAdminPageState extends State<GruposAdminPage> {
             ),
             child: Row(
               children: [
-                Icon(grupo.getIcon(), color: Colors.white, size: 28),
+                Icon(grupo.getIcon(), color: AppColors.light, size: 28),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     grupo.nome,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.light,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -240,12 +237,12 @@ class _GruposAdminPageState extends State<GruposAdminPage> {
   Widget _buildInfoRow(IconData icon, String text) {
     return Row(
       children: [
-        Icon(icon, size: 16, color: Colors.grey.shade600),
+        Icon(icon, size: 16, color: AppColors.textSecondary),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             text,
-            style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+            style: const TextStyle(fontSize: 14, color: AppColors.textPrimary),
           ),
         ),
       ],
@@ -288,7 +285,7 @@ class _GruposAdminPageState extends State<GruposAdminPage> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppColors.error),
             child: const Text('Excluir'),
           ),
         ],
@@ -304,7 +301,7 @@ class _GruposAdminPageState extends State<GruposAdminPage> {
             content: Text(
               success ? 'Grupo excluído com sucesso!' : 'Erro ao excluir grupo',
             ),
-            backgroundColor: success ? Colors.green : Colors.red,
+            backgroundColor: success ? AppColors.success : AppColors.error,
           ),
         );
       }

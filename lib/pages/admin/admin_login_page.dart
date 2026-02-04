@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
 import '../../services/auth_service.dart';
 import 'admin_home_page.dart';
 
@@ -38,10 +39,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Theme.of(context).primaryColor.withOpacity(0.1),
-              Colors.white,
-            ],
+            colors: [AppColors.primary.withOpacity(0.1), AppColors.light],
           ),
         ),
         child: Center(
@@ -64,13 +62,13 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Colors.red.shade50,
+                          color: AppColors.primaryLight,
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           Icons.admin_panel_settings,
                           size: 64,
-                          color: Colors.red.shade700,
+                          color: AppColors.primary,
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -81,7 +79,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF111827),
+                          color: AppColors.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -89,7 +87,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                         'Faça login para continuar',
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey.shade600,
+                          color: AppColors.textSecondary,
                         ),
                       ),
                       const SizedBox(height: 32),
@@ -161,7 +159,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                           onPressed: _isLoading ? null : _handleLogin,
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
-                            backgroundColor: Colors.red.shade700,
+                            backgroundColor: AppColors.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -173,7 +171,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white,
+                                      AppColors.light,
                                     ),
                                   ),
                                 )

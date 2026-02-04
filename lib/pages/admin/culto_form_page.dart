@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
 import '../../models/culto.dart';
 import '../../services/culto_service.dart';
 
@@ -175,18 +176,20 @@ class _CultoFormPageState extends State<CultoFormPage> {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? Colors.red.shade100
-                          : Colors.grey.shade200,
+                          ? AppColors.primaryLight
+                          : AppColors.greyLight,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: isSelected ? Colors.red : Colors.transparent,
+                        color: isSelected
+                            ? AppColors.primary
+                            : Colors.transparent,
                         width: 2,
                       ),
                     ),
                     child: Icon(
                       entry.value,
                       size: 32,
-                      color: isSelected ? Colors.red : Colors.grey.shade700,
+                      color: isSelected ? AppColors.primary : AppColors.grey700,
                     ),
                   ),
                 );
@@ -217,12 +220,14 @@ class _CultoFormPageState extends State<CultoFormPage> {
                       color: color,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: isSelected ? Colors.black : Colors.grey.shade300,
+                        color: isSelected
+                            ? AppColors.grey900
+                            : AppColors.grey300,
                         width: isSelected ? 3 : 1,
                       ),
                     ),
                     child: isSelected
-                        ? const Icon(Icons.check, color: Colors.white)
+                        ? const Icon(Icons.check, color: AppColors.light)
                         : null,
                   ),
                 );
@@ -248,7 +253,7 @@ class _CultoFormPageState extends State<CultoFormPage> {
                     onPressed: _isLoading ? null : _saveCulto,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: Colors.red.shade700,
+                      backgroundColor: AppColors.primary,
                     ),
                     child: _isLoading
                         ? const SizedBox(
@@ -257,7 +262,7 @@ class _CultoFormPageState extends State<CultoFormPage> {
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.white,
+                                AppColors.light,
                               ),
                             ),
                           )

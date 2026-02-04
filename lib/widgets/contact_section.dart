@@ -115,7 +115,7 @@ class ContactSection extends StatelessWidget {
           ),
           onPressed: () {
             const whatsappUrl =
-                'https://wa.me/5511999999999?text=Olá%20Pastor,%20gostaria%20de%20conversar.';
+                'https://wa.me/554799253311?text=Olá%20Pastor,%20gostaria%20de%20conversar.';
             launchUrl(
               Uri.parse(whatsappUrl),
               mode: LaunchMode.externalApplication,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
 import '../../models/grupo_familiar.dart';
 import '../../services/grupo_familiar_service.dart';
 
@@ -197,12 +198,12 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? Colors.grey.shade300
-                          : Colors.grey.shade100,
+                          ? AppColors.grey300
+                          : AppColors.greyLight,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                         color: isSelected
-                            ? Colors.grey.shade800
+                            ? AppColors.grey800
                             : Colors.transparent,
                         width: 2,
                       ),
@@ -210,9 +211,7 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
                     child: Icon(
                       entry.value,
                       size: 32,
-                      color: isSelected
-                          ? Colors.grey.shade800
-                          : Colors.grey.shade600,
+                      color: isSelected ? AppColors.grey800 : AppColors.grey600,
                     ),
                   ),
                 );
@@ -243,12 +242,14 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
                       color: color,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: isSelected ? Colors.black : Colors.grey.shade300,
+                        color: isSelected
+                            ? AppColors.grey900
+                            : AppColors.grey300,
                         width: isSelected ? 3 : 1,
                       ),
                     ),
                     child: isSelected
-                        ? const Icon(Icons.check, color: Colors.white)
+                        ? const Icon(Icons.check, color: AppColors.light)
                         : null,
                   ),
                 );
@@ -274,7 +275,7 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
                     onPressed: _isLoading ? null : _saveGrupo,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: Colors.grey.shade800,
+                      backgroundColor: AppColors.grey800,
                     ),
                     child: _isLoading
                         ? const SizedBox(
@@ -283,7 +284,7 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.white,
+                                AppColors.light,
                               ),
                             ),
                           )
@@ -334,7 +335,7 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Erro ao salvar grupo'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.error,
             ),
           );
         }
@@ -342,7 +343,7 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro: $e'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Erro: $e'), backgroundColor: AppColors.error),
         );
       }
     } finally {
