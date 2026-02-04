@@ -16,6 +16,7 @@ class _GroupsSectionState extends State<GroupsSection> {
   String _searchText = '';
   List<GrupoFamiliar> _allGroups = [];
   List<GrupoFamiliar> _filteredGroups = [];
+  String? _loadingGroupId; // Para controlar o estado de carregamento
 
   @override
   void initState() {
@@ -275,52 +276,147 @@ class _GroupsSectionState extends State<GroupsSection> {
                 const SizedBox(height: 24),
 
                 // Botão WhatsApp
-                GestureDetector(
-                  onTap: () async {
-                    final url = g.whatsapp;
-                    if (await canLaunchUrl(Uri.parse(url))) {
-                      await launchUrl(
-                        Uri.parse(url),
-                        mode: LaunchMode.externalApplication,
-                      );
-                    }
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.red.shade600, Colors.red.shade700],
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.red.withOpacity(0.3),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.chat, color: Colors.white, size: 20),
-                        SizedBox(width: 10),
-                        Text(
-                          'Falar com o líder',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                _buildWhatsAppButton(g),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 🔸 Botão WhatsApp com validação
+  Widget _buildWhatsAppButton(GrupoFamiliar g) {
+    final isLoading = _loadingGroupId == g.id;
+
+    return GestureDetector(
+      onTap: isLoading ? null : () => _openWhatsApp(g),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: isLoading
+                ? [Colors.grey.shade600, Colors.grey.shade700]
+                : [Colors.red.shade600, Colors.red.shade700],
+          ),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: (isLoading ? Colors.grey : Colors.red).withOpacity(0.3),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Center(
+          child: isLoading
+              ? SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.white.withOpacity(0.8),
+                    ),
+                    strokeWidth: 2,
+                  ),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.chat, color: Colors.white, size: 20),
+                    const SizedBox(width: 10),
+                    const Text(
+                      'Falar com o líder',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+        ),
+      ),
+    );
+  }
+
+  // 🔸 Função para abrir WhatsApp
+  Future<void> _openWhatsApp(GrupoFamiliar g) async {
+    // Validar se tem telefone cadastrado
+    if (g.whatsapp.isEmpty) {
+      if (mounted) {
+        _showErrorDialog(
+          'Telefone não cadastrado',
+          'Este grupo não possui um número de WhatsApp cadastrado.',
+        );
+      }
+      return;
+    }
+
+    // Extrair apenas os números do telefone
+    final phoneNumber = g.whatsapp.replaceAll(RegExp(r'[^0-9]'), '');
+
+    if (phoneNumber.isEmpty) {
+      if (mounted) {
+        _showErrorDialog(
+          'Telefone inválido',
+          'O número de telefone cadastrado é inválido.',
+        );
+      }
+      return;
+    }
+
+    // Formatar para o padrão WhatsApp (com código de país se necessário)
+    final formattedPhone = phoneNumber.startsWith('55')
+        ? phoneNumber
+        : '55$phoneNumber'; // Assumindo Brasil
+
+    // Criar URL do WhatsApp
+    final whatsappUrl =
+        'https://wa.me/$formattedPhone?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20o%20grupo%20${g.nome}';
+
+    setState(() => _loadingGroupId = g.id);
+
+    try {
+      final Uri uri = Uri.parse(whatsappUrl);
+
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        if (mounted) {
+          _showErrorDialog(
+            'WhatsApp não disponível',
+            'Não foi possível abrir o WhatsApp. Certifique-se de que está instalado.',
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        _showErrorDialog(
+          'Erro',
+          'Ocorreu um erro ao tentar abrir o WhatsApp: $e',
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _loadingGroupId = null);
+      }
+    }
+  }
+
+  // 🔸 Diálogo de erro
+  void _showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
           ),
         ],
       ),
