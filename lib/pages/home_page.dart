@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Header(),
-            StartSection(key: _inicioKey),
+            StartSection(key: _inicioKey, scrollController: _scrollController),
             TransmissionsSection(key: _transmissoesKey),
             AgendaSection(key: _agendaKey),
             PicturesSection(key: _fotosKey),

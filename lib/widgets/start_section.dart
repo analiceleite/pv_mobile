@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class StartSection extends StatelessWidget {
-  const StartSection({super.key});
+  final ScrollController? scrollController;
+
+  const StartSection({super.key, this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +24,7 @@ class StartSection extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [
-              Colors.black.withOpacity(0.7),
-              Colors.black.withOpacity(0.3),
-            ],
+            colors: [Colors.black, Colors.black],
           ),
         ),
         child: SafeArea(
@@ -34,7 +33,9 @@ class StartSection extends StatelessWidget {
               horizontal: isMobile ? 24 : 48,
               vertical: 24,
             ),
-            child: isMobile ? _MobileLayout() : _DesktopLayout(),
+            child: isMobile
+                ? _MobileLayout(scrollController: scrollController)
+                : _DesktopLayout(scrollController: scrollController),
           ),
         ),
       ),
@@ -43,7 +44,30 @@ class StartSection extends StatelessWidget {
 }
 
 class _MobileLayout extends StatelessWidget {
-  const _MobileLayout();
+  final ScrollController? scrollController;
+
+  const _MobileLayout({this.scrollController});
+
+  void _scrollToSection(String sectionType) {
+    if (scrollController == null) return;
+
+    double targetOffset = 0;
+    // Aproximadamente as posições de cada seção (valores ajustáveis)
+    switch (sectionType) {
+      case 'transmissoes':
+        targetOffset = 2700; // Transmissões
+        break;
+      case 'grupos':
+        targetOffset = 4400; // Grupos Familiares
+        break;
+    }
+
+    scrollController!.animateTo(
+      targetOffset,
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.easeInOutCubic,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,16 +80,12 @@ class _MobileLayout extends StatelessWidget {
         const SizedBox(height: 40),
         CustomRedButton(
           text: 'Cultos',
-          onTap: () {
-            // ação ao clicar em "Cultos"
-          },
+          onTap: () => _scrollToSection('transmissoes'),
         ),
         const SizedBox(height: 16),
         CustomRedButton(
           text: 'Grupos Familiares',
-          onTap: () {
-            // ação ao clicar em "Grupos Familiares"
-          },
+          onTap: () => _scrollToSection('grupos'),
         ),
         const Spacer(),
       ],
@@ -74,7 +94,29 @@ class _MobileLayout extends StatelessWidget {
 }
 
 class _DesktopLayout extends StatelessWidget {
-  const _DesktopLayout();
+  final ScrollController? scrollController;
+
+  const _DesktopLayout({this.scrollController});
+
+  void _scrollToSection(String sectionType) {
+    if (scrollController == null) return;
+
+    double targetOffset = 0;
+    switch (sectionType) {
+      case 'transmissoes':
+        targetOffset = 600;
+        break;
+      case 'grupos':
+        targetOffset = 2400;
+        break;
+    }
+
+    scrollController!.animateTo(
+      targetOffset,
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.easeInOutCubic,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,16 +133,12 @@ class _DesktopLayout extends StatelessWidget {
               const SizedBox(height: 40),
               CustomRedButton(
                 text: 'Cultos',
-                onTap: () {
-                  // ação ao clicar em "Cultos"
-                },
+                onTap: () => _scrollToSection('transmissoes'),
               ),
               const SizedBox(height: 16),
               CustomRedButton(
                 text: 'Grupos Familiares',
-                onTap: () {
-                  // ação ao clicar em "Grupos Familiares"
-                },
+                onTap: () => _scrollToSection('grupos'),
               ),
             ],
           ),
