@@ -12,8 +12,47 @@ import '../services/auth_service.dart';
 import 'admin/admin_login_page.dart';
 import 'admin/admin_home_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final ScrollController _scrollController = ScrollController();
+
+  // Chaves globais para cada seção
+  final GlobalKey _inicioKey = GlobalKey();
+  final GlobalKey _transmissoesKey = GlobalKey();
+  final GlobalKey _agendaKey = GlobalKey();
+  final GlobalKey _fotosKey = GlobalKey();
+  final GlobalKey _gruposKey = GlobalKey();
+  final GlobalKey _ofertasKey = GlobalKey();
+  final GlobalKey _contatoKey = GlobalKey();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToSection(GlobalKey key) {
+    Navigator.pop(context);
+
+    Future.delayed(const Duration(milliseconds: 300), () {
+      final RenderBox? renderBox =
+          key.currentContext?.findRenderObject() as RenderBox?;
+      if (renderBox != null) {
+        final offset = renderBox.localToGlobal(Offset.zero).dy;
+        _scrollController.animateTo(
+          offset,
+          duration: const Duration(milliseconds: 800),
+          curve: Curves.easeInOutCubic,
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +63,18 @@ class HomePage extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.only(top: 60),
           children: [
-            _menuItem(context, 'Início'),
-            _menuItem(context, 'Transmissões'),
-            _menuItem(context, 'Agenda'),
-            _menuItem(context, 'Fotos'),
-            _menuItem(context, 'Grupos'),
-            _menuItem(context, 'Ofertas'),
-            _menuItem(context, 'Contato'),
+            _menuItem(context, 'Início', Icons.home, _inicioKey),
+            _menuItem(
+              context,
+              'Transmissões',
+              Icons.videocam,
+              _transmissoesKey,
+            ),
+            _menuItem(context, 'Agenda', Icons.calendar_month, _agendaKey),
+            _menuItem(context, 'Fotos', Icons.photo_library, _fotosKey),
+            _menuItem(context, 'Grupos', Icons.people, _gruposKey),
+            _menuItem(context, 'Ofertas', Icons.card_giftcard, _ofertasKey),
+            _menuItem(context, 'Contato', Icons.email, _contatoKey),
             const Divider(color: Colors.grey),
             ListTile(
               leading: const Icon(
@@ -68,16 +112,17 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
-          children: const [
+          children: [
             Header(),
-            StartSection(),
-            TransmissionsSection(),
-            AgendaSection(),
-            PicturesSection(),
-            GroupsSection(),
-            OfferSection(),
-            ContactSection(),
+            StartSection(key: _inicioKey),
+            TransmissionsSection(key: _transmissoesKey),
+            AgendaSection(key: _agendaKey),
+            PicturesSection(key: _fotosKey),
+            GroupsSection(key: _gruposKey),
+            OfferSection(key: _ofertasKey),
+            ContactSection(key: _contatoKey),
             Footer(),
           ],
         ),
@@ -85,10 +130,16 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _menuItem(BuildContext context, String title) {
+  Widget _menuItem(
+    BuildContext context,
+    String title,
+    IconData icon,
+    GlobalKey key,
+  ) {
     return ListTile(
+      leading: Icon(icon, color: Colors.white),
       title: Text(title, style: const TextStyle(color: Colors.white)),
-      onTap: () => Navigator.pop(context),
+      onTap: () => _scrollToSection(key),
     );
   }
 }
