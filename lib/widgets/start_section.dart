@@ -25,7 +25,10 @@ class StartSection extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [AppColors.darkBg, AppColors.darkBg],
+            colors: [
+              AppColors.darkBg.withOpacity(0.8), // Reduzir opacidade
+              AppColors.darkBg.withOpacity(0.8),
+            ],
           ),
         ),
         child: SafeArea(

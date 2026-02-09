@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/header.dart';
 import '../widgets/start_section.dart';
+import '../widgets/youtube_transmissions_section.dart';
 import '../widgets/transmissions_section.dart';
 import '../widgets/agenda_section.dart';
 import '../widgets/pictures_section.dart';
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
 
   // Chaves globais para cada seção
   final GlobalKey _inicioKey = GlobalKey();
+  final GlobalKey _youtubeKey = GlobalKey();
   final GlobalKey _transmissoesKey = GlobalKey();
   final GlobalKey _agendaKey = GlobalKey();
   final GlobalKey _fotosKey = GlobalKey();
@@ -65,6 +67,7 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.only(top: 60),
           children: [
             _menuItem(context, 'Início', Icons.home, _inicioKey),
+            _menuItem(context, 'YouTube', Icons.live_tv, _youtubeKey),
             _menuItem(
               context,
               'Transmissões',
@@ -118,6 +121,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Header(),
             StartSection(key: _inicioKey, scrollController: _scrollController),
+            YouTubeTransmissionsSection(key: _youtubeKey),
             TransmissionsSection(key: _transmissoesKey),
             AgendaSection(key: _agendaKey),
             PicturesSection(key: _fotosKey),
