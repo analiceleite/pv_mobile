@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:igrejapv_mobile/services/pix_service.dart';
 
 class OfferSection extends StatefulWidget {
   const OfferSection({super.key});
@@ -13,8 +14,7 @@ class _OfferSectionState extends State<OfferSection> {
   final TextEditingController _customValueController = TextEditingController();
   bool showCustomInput = false;
 
-  // Chave PIX da igreja (substitua pela real)
-  final String pixKey = 'igreja@exemplo.com.br';
+  final String pixKey = '05997686000150';
 
   @override
   void dispose() {
@@ -334,11 +334,34 @@ class _OfferSectionState extends State<OfferSection> {
   }
 }
 
-class _PixDialog extends StatelessWidget {
+class _PixDialog extends StatefulWidget {
   final double value;
   final String pixKey;
 
   const _PixDialog({required this.value, required this.pixKey});
+
+  @override
+  State<_PixDialog> createState() => _PixDialogState();
+}
+
+class _PixDialogState extends State<_PixDialog> {
+  late String pixCode;
+  late String qrCodeUrl;
+  bool showCopyMessage = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Gera o código PIX real
+    pixCode = PixService.createPixCode(
+      pixKey: widget.pixKey,
+      valor: widget.value,
+      churchName: 'PV',
+      city: 'JOINVILLE',
+    );
+    // Gera a URL do QR Code
+    qrCodeUrl = PixService.generateQrCodeUrl(pixCode);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -378,7 +401,7 @@ class _PixDialog extends StatelessWidget {
 
             // Valor
             Text(
-              'R\$ ${value.toStringAsFixed(2)}',
+              'R\$ ${widget.value.toStringAsFixed(2)}',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -387,30 +410,157 @@ class _PixDialog extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // QR Code placeholder (você pode usar o pacote qr_flutter)
-            Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.shade300),
+            // QR Code Real
+            SizedBox(
+              width: 220,
+              height: 220,
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.shade300, width: 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.15),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Image.network(
+                  qrCodeUrl,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.qr_code_2,
+                          size: 80,
+                          color: Colors.grey.shade400,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'QR Code',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.qr_code_2, size: 80, color: Colors.grey.shade400),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Escaneie o QR Code',
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-                  ),
-                ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Escaneie com seu app PIX',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey.shade600,
               ),
             ),
             const SizedBox(height: 24),
 
-            // Chave PIX
+            // Código PIX
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.blue.shade200),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        size: 16,
+                        color: Colors.blue.shade600,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Código PIX (Brcode):',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.blue.shade600,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Text(
+                              pixCode,
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontFamily: 'monospace',
+                                color: Color(0xFF111827),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.copy, size: 18),
+                          onPressed: () {
+                            Clipboard.setData(ClipboardData(text: pixCode));
+                            setState(() {
+                              showCopyMessage = true;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: const Text('Código PIX copiado!'),
+                                backgroundColor: Colors.green.shade600,
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                            Future.delayed(const Duration(seconds: 2), () {
+                              if (mounted) {
+                                setState(() {
+                                  showCopyMessage = false;
+                                });
+                              }
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Chave PIX Info
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -422,19 +572,19 @@ class _PixDialog extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Chave PIX:',
+                    'Chave PIX (CPF):',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey.shade600,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
                       Expanded(
                         child: Text(
-                          pixKey,
+                          widget.pixKey,
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -445,11 +595,12 @@ class _PixDialog extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.copy, size: 20),
                         onPressed: () {
-                          Clipboard.setData(ClipboardData(text: pixKey));
+                          Clipboard.setData(ClipboardData(text: widget.pixKey));
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Chave PIX copiada!'),
-                              duration: Duration(seconds: 2),
+                            SnackBar(
+                              content: const Text('Chave PIX copiada!'),
+                              backgroundColor: Colors.green.shade600,
+                              duration: const Duration(seconds: 2),
                             ),
                           );
                         },
