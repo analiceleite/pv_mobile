@@ -4,6 +4,9 @@ import 'package:url_launcher/url_launcher.dart';
 class PicturesSection extends StatelessWidget {
   const PicturesSection({super.key});
 
+  static const String _googleDriveUrl =
+      'https://drive.google.com/drive/folders/1Bjpl6t__N5OcT2Jf6apZc9Jq_KzknwZJ?usp=sharing';
+
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
@@ -15,6 +18,31 @@ class PicturesSection extends StatelessWidget {
       child: isMobile
           ? _buildMobileLayout(context)
           : _buildDesktopLayout(context),
+    );
+  }
+
+  // Botão reutilizável para acessar Google Drive
+  Widget _buildDriveButton() {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        minimumSize: const Size(200, 50),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      onPressed: () async {
+        if (await canLaunchUrl(Uri.parse(_googleDriveUrl))) {
+          await launchUrl(
+            Uri.parse(_googleDriveUrl),
+            mode: LaunchMode.externalApplication,
+          );
+        }
+      },
+      icon: const Icon(Icons.photo_album),
+      label: const Text(
+        'Ver Fotos no Drive',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      ),
     );
   }
 
@@ -40,31 +68,7 @@ class PicturesSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(200, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: () async {
-                  const url =
-                      'https://drive.google.com/drive/folders/1Bjpl6t__N5OcT2Jf6apZc9Jq_KzknwZJ?usp=sharing';
-                  if (await canLaunchUrl(Uri.parse(url))) {
-                    await launchUrl(
-                      Uri.parse(url),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  }
-                },
-                icon: const Icon(Icons.photo_album),
-                label: const Text(
-                  'Ver Fotos no Drive',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-              ),
+              _buildDriveButton(),
             ],
           ),
         ),
@@ -74,51 +78,13 @@ class PicturesSection extends StatelessWidget {
         // 🔹 Lado direito — tutorial com tópicos
         Expanded(
           flex: 2,
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  'Como acessar suas fotos',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                SizedBox(height: 12),
-                _TutorialStep(
-                  number: '1',
-                  text:
-                      'Clique no botão “Ver Fotos no Drive” ao lado esquerdo.',
-                ),
-                _TutorialStep(
-                  number: '2',
-                  text:
-                      'Você será redirecionado para o Google Drive oficial da igreja.',
-                ),
-                _TutorialStep(
-                  number: '3',
-                  text: 'Escolha a pasta do culto que deseja visualizar.',
-                ),
-                _TutorialStep(
-                  number: '4',
-                  text: 'Clique na foto desejada para abrir ou baixar.',
-                ),
-              ],
-            ),
+          child: _buildTutorialCard(
+            steps: const [
+              'Clique no botão "Ver Fotos no Drive" ao lado esquerdo.',
+              'Você será redirecionado para o Google Drive oficial da igreja.',
+              'Escolha a pasta do culto que deseja visualizar.',
+              'Clique na foto desejada para abrir ou baixar.',
+            ],
           ),
         ),
       ],
@@ -139,7 +105,7 @@ class PicturesSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
+                color: Colors.grey.withValues(alpha: 0.3),
                 blurRadius: 15,
                 offset: const Offset(0, 4),
               ),
@@ -174,20 +140,7 @@ class PicturesSection extends StatelessWidget {
         const SizedBox(height: 50),
 
         // 🔹 Bloco com ícone e botão
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
+        _buildCardContainer(
           child: Column(
             children: [
               const Icon(Icons.cloud, color: Colors.black, size: 60),
@@ -197,27 +150,7 @@ class PicturesSection extends StatelessWidget {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(200, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: () async {
-                  const url = 'https://drive.google.com/drive/fotos-igreja';
-                  if (await canLaunchUrl(Uri.parse(url))) {
-                    await launchUrl(
-                      Uri.parse(url),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  }
-                },
-                icon: const Icon(Icons.photo_album),
-                label: const Text('Ver Fotos no Drive'),
-              ),
+              _buildDriveButton(),
             ],
           ),
         ),
@@ -225,47 +158,59 @@ class PicturesSection extends StatelessWidget {
         const SizedBox(height: 32),
 
         // 🔹 Bloco com tutorial
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                'Como acessar suas fotos',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              SizedBox(height: 12),
-              _TutorialStep(
-                number: '1',
-                text: 'Toque em “Ver Fotos no Drive”.',
-              ),
-              _TutorialStep(
-                number: '2',
-                text: 'Acesse a pasta do culto desejado.',
-              ),
-              _TutorialStep(
-                number: '3',
-                text: 'Visualize ou baixe as fotos diretamente.',
-              ),
-            ],
-          ),
+        _buildTutorialCard(
+          steps: const [
+            'Toque em "Ver Fotos no Drive".',
+            'Acesse a pasta do culto desejado.',
+            'Visualize ou baixe as fotos diretamente.',
+          ],
         ),
       ],
+    );
+  }
+
+  // Widget auxiliar para card com container estilizado
+  Widget _buildCardContainer({required Widget child}) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+
+  // Widget para card de tutorial
+  Widget _buildTutorialCard({required List<String> steps}) {
+    return _buildCardContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Como acessar suas fotos',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 12),
+          ...List.generate(
+            steps.length,
+            (index) =>
+                _TutorialStep(number: '${index + 1}', text: steps[index]),
+          ),
+        ],
+      ),
     );
   }
 }
