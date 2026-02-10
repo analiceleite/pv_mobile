@@ -50,7 +50,8 @@ class PicturesSection extends StatelessWidget {
                   ),
                 ),
                 onPressed: () async {
-                  const url = 'https://drive.google.com/drive/fotos-igreja';
+                  const url =
+                      'https://drive.google.com/drive/folders/1Bjpl6t__N5OcT2Jf6apZc9Jq_KzknwZJ?usp=sharing';
                   if (await canLaunchUrl(Uri.parse(url))) {
                     await launchUrl(
                       Uri.parse(url),

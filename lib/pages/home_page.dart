@@ -115,22 +115,48 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          children: [
-            Header(),
-            StartSection(key: _inicioKey, scrollController: _scrollController),
-            YouTubeTransmissionsSection(key: _youtubeKey),
-            TransmissionsSection(key: _transmissoesKey),
-            AgendaSection(key: _agendaKey),
-            PicturesSection(key: _fotosKey),
-            GroupsSection(key: _gruposKey),
-            OfferSection(key: _ofertasKey),
-            ContactSection(key: _contatoKey),
-            Footer(),
-          ],
-        ),
+      body: Stack(
+        children: [
+          // Conteúdo com scroll
+          SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              children: [
+                const SizedBox(height: 60), // Espaço para o header sticky
+                StartSection(
+                  key: _inicioKey,
+                  scrollController: _scrollController,
+                ),
+                YouTubeTransmissionsSection(key: _youtubeKey),
+                TransmissionsSection(key: _transmissoesKey),
+                AgendaSection(key: _agendaKey),
+                PicturesSection(key: _fotosKey),
+                GroupsSection(key: _gruposKey),
+                OfferSection(key: _ofertasKey),
+                ContactSection(key: _contatoKey),
+                Footer(),
+              ],
+            ),
+          ),
+          // Header sticky no topo
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: const Header(),
+            ),
+          ),
+        ],
       ),
     );
   }
