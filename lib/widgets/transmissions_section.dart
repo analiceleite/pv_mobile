@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TransmissionsSection extends StatelessWidget {
   const TransmissionsSection({super.key});
@@ -16,7 +17,12 @@ class TransmissionsSection extends StatelessWidget {
         'button': 'Ouvir agora',
         'gradient': [const Color(0xFF1F2937), const Color(0xFF374151)],
         // Dark Gray
-        'onPressed': () {},
+        'onPressed': () async {
+          final Uri url = Uri.parse('https://radiorefugio.com.br');
+          if (await canLaunchUrl(url)) {
+            await launchUrl(url, mode: LaunchMode.inAppWebView);
+          }
+        },
       },
       {
         'icon': Icons.live_tv,
@@ -26,7 +32,14 @@ class TransmissionsSection extends StatelessWidget {
         'button': 'Assistir Live',
         'gradient': [const Color(0xFF111827), const Color(0xFF1F2937)],
         // Very Dark Gray
-        'onPressed': () {},
+        'onPressed': () async {
+          final Uri url = Uri.parse(
+            'https://www.youtube.com/@comunidadepalavradavida1632/streams',
+          );
+          if (await canLaunchUrl(url)) {
+            await launchUrl(url, mode: LaunchMode.inAppWebView);
+          }
+        },
       },
       {
         'icon': Icons.facebook,
@@ -36,7 +49,14 @@ class TransmissionsSection extends StatelessWidget {
         'button': 'Seguir no Facebook',
         'gradient': [const Color(0xFF374151), const Color(0xFF4B5563)],
         // Medium Gray
-        'onPressed': () {},
+        'onPressed': () async {
+          final Uri url = Uri.parse(
+            'https://www.facebook.com/pages/Comunidade%20Crist%C3%A3%20Palavra%20da%20Vida/522804331174409/#',
+          );
+          if (await canLaunchUrl(url)) {
+            await launchUrl(url, mode: LaunchMode.inAppWebView);
+          }
+        },
       },
       {
         'icon': Icons.camera_alt,
@@ -46,7 +66,14 @@ class TransmissionsSection extends StatelessWidget {
         'button': 'Seguir no Instagram',
         'gradient': [const Color(0xFF4B5563), const Color(0xFF6B7280)],
         // Light Gray
-        'onPressed': () {},
+        'onPressed': () async {
+          final Uri url = Uri.parse(
+            'https://www.instagram.com/comunidadepalavradavida/',
+          );
+          if (await canLaunchUrl(url)) {
+            await launchUrl(url, mode: LaunchMode.inAppWebView);
+          }
+        },
       },
     ];
 
