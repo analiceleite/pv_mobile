@@ -80,220 +80,365 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
     final isEditing = widget.grupo != null;
 
     return Scaffold(
+      backgroundColor: Color(0xFF1F2937),
       appBar: AppBar(
+        backgroundColor: Color(0xFF111827),
+        foregroundColor: Colors.white,
         title: Text(isEditing ? 'Editar Grupo' : 'Novo Grupo'),
         centerTitle: true,
         elevation: 0,
       ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            // Campo Nome
-            TextFormField(
-              controller: _nomeController,
-              decoration: const InputDecoration(
-                labelText: 'Nome do Grupo',
-                hintText: 'Ex: Grupo Família Abençoada',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.group),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, informe o nome';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-
-            // Campo Líder
-            TextFormField(
-              controller: _liderController,
-              decoration: const InputDecoration(
-                labelText: 'Líder',
-                hintText: 'Ex: João e Maria Silva',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.person),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, informe o líder';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-
-            // Campo Endereço
-            TextFormField(
-              controller: _enderecoController,
-              decoration: const InputDecoration(
-                labelText: 'Endereço',
-                hintText: 'Ex: Rua das Flores, 123',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.location_on),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, informe o endereço';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-
-            // Campo Horário
-            TextFormField(
-              controller: _horarioController,
-              decoration: const InputDecoration(
-                labelText: 'Horário',
-                hintText: 'Ex: Quintas às 19h30',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.access_time),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, informe o horário';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-
-            // Campo WhatsApp
-            TextFormField(
-              controller: _whatsappController,
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(
-                labelText: 'WhatsApp',
-                hintText: 'Ex: https://wa.me/5511999999999',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.phone),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, informe o WhatsApp';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 24),
-
-            // Seletor de Ícone
-            const Text(
-              'Ícone',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: _availableIcons.entries.map((entry) {
-                final isSelected = _selectedIcon == entry.key;
-                return InkWell(
-                  onTap: () => setState(() => _selectedIcon = entry.key),
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? AppColors.grey300
-                          : AppColors.greyLight,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: isSelected
-                            ? AppColors.grey800
-                            : Colors.transparent,
-                        width: 2,
-                      ),
-                    ),
-                    child: Icon(
-                      entry.value,
-                      size: 32,
-                      color: isSelected ? AppColors.grey800 : AppColors.grey600,
-                    ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF1F2937), Color(0xFF111827)],
+          ),
+        ),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              // Campo Nome
+              TextFormField(
+                controller: _nomeController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Nome do Grupo',
+                  labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
+                  hintText: 'Ex: Grupo Família Abençoada',
+                  hintStyle: TextStyle(color: Color(0xFF6B7280)),
+                  prefixIcon: Icon(Icons.group, color: Color(0xFF9CA3AF)),
+                  filled: true,
+                  fillColor: Color(0xFF374151),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF4B5563)),
                   ),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 24),
-
-            // Seletor de Cor
-            const Text(
-              'Cor',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: _availableColors.map((colorMap) {
-                final hex = colorMap['hex']!;
-                final isSelected = _selectedColor == hex;
-                final color = Color(int.parse(hex.replaceFirst('#', '0xFF')));
-
-                return InkWell(
-                  onTap: () => setState(() => _selectedColor = hex),
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: color,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: isSelected
-                            ? AppColors.grey900
-                            : AppColors.grey300,
-                        width: isSelected ? 3 : 1,
-                      ),
-                    ),
-                    child: isSelected
-                        ? const Icon(Icons.check, color: AppColors.light)
-                        : null,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF4B5563)),
                   ),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 32),
-
-            // Botões de ação
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: _isLoading ? null : () => Navigator.pop(context),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    child: const Text('Cancelar'),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626)),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
                   ),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _isLoading ? null : _saveGrupo,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: AppColors.grey800,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, informe o nome';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // Campo Líder
+              TextFormField(
+                controller: _liderController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Líder',
+                  labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
+                  hintText: 'Ex: João e Maria Silva',
+                  hintStyle: TextStyle(color: Color(0xFF6B7280)),
+                  prefixIcon: Icon(Icons.person, color: Color(0xFF9CA3AF)),
+                  filled: true,
+                  fillColor: Color(0xFF374151),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF4B5563)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF4B5563)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626)),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, informe o líder';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // Campo Endereço
+              TextFormField(
+                controller: _enderecoController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Endereço',
+                  labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
+                  hintText: 'Ex: Rua das Flores, 123',
+                  hintStyle: TextStyle(color: Color(0xFF6B7280)),
+                  prefixIcon: Icon(Icons.location_on, color: Color(0xFF9CA3AF)),
+                  filled: true,
+                  fillColor: Color(0xFF374151),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF4B5563)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF4B5563)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626)),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, informe o endereço';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // Campo Horário
+              TextFormField(
+                controller: _horarioController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Horário',
+                  labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
+                  hintText: 'Ex: Quintas às 19h30',
+                  hintStyle: TextStyle(color: Color(0xFF6B7280)),
+                  prefixIcon: Icon(Icons.access_time, color: Color(0xFF9CA3AF)),
+                  filled: true,
+                  fillColor: Color(0xFF374151),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF4B5563)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF4B5563)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626)),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, informe o horário';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // Campo WhatsApp
+              TextFormField(
+                controller: _whatsappController,
+                keyboardType: TextInputType.phone,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'WhatsApp',
+                  labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
+                  hintText: 'Ex: https://wa.me/5511999999999',
+                  hintStyle: TextStyle(color: Color(0xFF6B7280)),
+                  prefixIcon: Icon(Icons.phone, color: Color(0xFF9CA3AF)),
+                  filled: true,
+                  fillColor: Color(0xFF374151),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF4B5563)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF4B5563)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626)),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, informe o WhatsApp';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 24),
+
+              // Seletor de Ícone
+              const Text(
+                'Ícone',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: _availableIcons.entries.map((entry) {
+                  final isSelected = _selectedIcon == entry.key;
+                  return InkWell(
+                    onTap: () => setState(() => _selectedIcon = entry.key),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? Color(0xFF1F2937)
+                            : Color(0xFF374151),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: isSelected
+                              ? Color(0xFFDC2626)
+                              : Color(0xFF4B5563),
+                          width: 2,
+                        ),
+                      ),
+                      child: Icon(
+                        entry.value,
+                        size: 32,
+                        color: isSelected
+                            ? Color(0xFFDC2626)
+                            : Color(0xFF9CA3AF),
+                      ),
                     ),
-                    child: _isLoading
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                AppColors.light,
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 24),
+
+              // Seletor de Cor
+              const Text(
+                'Cor',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: _availableColors.map((colorMap) {
+                  final hex = colorMap['hex']!;
+                  final isSelected = _selectedColor == hex;
+                  final color = Color(int.parse(hex.replaceFirst('#', '0xFF')));
+
+                  return InkWell(
+                    onTap: () => setState(() => _selectedColor = hex),
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: color,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: isSelected ? Colors.white : Color(0xFF4B5563),
+                          width: isSelected ? 3 : 1,
+                        ),
+                      ),
+                      child: isSelected
+                          ? const Icon(Icons.check, color: Colors.white)
+                          : null,
+                    ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 32),
+
+              // Botões de ação
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: _isLoading
+                          ? null
+                          : () => Navigator.pop(context),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        foregroundColor: Color(0xFF9CA3AF),
+                        side: BorderSide(color: Color(0xFF4B5563)),
+                      ),
+                      child: const Text('Cancelar'),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _isLoading ? null : _saveGrupo,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: Color(0xFFDC2626),
+                        foregroundColor: Colors.white,
+                      ),
+                      child: _isLoading
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
                               ),
-                            ),
-                          )
-                        : Text(isEditing ? 'Atualizar' : 'Salvar'),
+                            )
+                          : Text(isEditing ? 'Atualizar' : 'Salvar'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -335,7 +480,7 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Erro ao salvar grupo'),
-              backgroundColor: AppColors.error,
+              backgroundColor: Color(0xFFDC2626),
             ),
           );
         }
@@ -343,7 +488,10 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro: $e'), backgroundColor: AppColors.error),
+          SnackBar(
+            content: Text('Erro: $e'),
+            backgroundColor: Color(0xFFDC2626),
+          ),
         );
       }
     } finally {

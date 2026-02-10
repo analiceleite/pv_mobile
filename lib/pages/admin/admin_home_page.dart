@@ -13,7 +13,10 @@ class AdminHomePage extends StatelessWidget {
     final authService = AuthService();
 
     return Scaffold(
+      backgroundColor: Color(0xFF1F2937),
       appBar: AppBar(
+        backgroundColor: Color(0xFF111827),
+        foregroundColor: Colors.white,
         title: const Text('Painel Administrativo'),
         centerTitle: true,
         elevation: 0,
@@ -26,17 +29,27 @@ class AdminHomePage extends StatelessWidget {
               final confirm = await showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('Confirmar saída'),
-                  content: const Text('Deseja realmente sair?'),
+                  backgroundColor: Color(0xFF374151),
+                  title: const Text(
+                    'Confirmar saída',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  content: const Text(
+                    'Deseja realmente sair?',
+                    style: TextStyle(color: Color(0xFF9CA3AF)),
+                  ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: const Text('Cancelar'),
+                      child: const Text(
+                        'Cancelar',
+                        style: TextStyle(color: Color(0xFF9CA3AF)),
+                      ),
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
                       style: TextButton.styleFrom(
-                        foregroundColor: AppColors.primary,
+                        foregroundColor: Color(0xFFDC2626),
                       ),
                       child: const Text('Sair'),
                     ),
@@ -59,7 +72,7 @@ class AdminHomePage extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [AppColors.primary.withOpacity(0.1), AppColors.light],
+            colors: [Color(0xFF1F2937), Color(0xFF111827)],
           ),
         ),
         child: SafeArea(
@@ -72,7 +85,7 @@ class AdminHomePage extends StatelessWidget {
                 const Icon(
                   Icons.admin_panel_settings,
                   size: 80,
-                  color: AppColors.primary,
+                  color: Color(0xFFDC2626),
                 ),
                 const SizedBox(height: 16),
                 const Text(
@@ -81,17 +94,14 @@ class AdminHomePage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Gerencie cultos e grupos familiares',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: AppColors.textSecondary,
-                  ),
+                  style: TextStyle(fontSize: 16, color: Color(0xFF9CA3AF)),
                 ),
                 const SizedBox(height: 50),
 
@@ -120,7 +130,7 @@ class AdminHomePage extends StatelessWidget {
                   title: 'Gerenciar Grupos Familiares',
                   subtitle: 'Adicionar, editar ou remover grupos',
                   icon: Icons.groups,
-                  color: AppColors.grey800,
+                  color: AppColors.primary,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -139,7 +149,7 @@ class AdminHomePage extends StatelessWidget {
                   title: 'Configurações de Contribuição',
                   subtitle: 'Gerenciar chave PIX e dados de contribuição',
                   icon: Icons.payment,
-                  color: Colors.green.shade600,
+                  color: Color(0xFFDC2626),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -157,11 +167,14 @@ class AdminHomePage extends StatelessWidget {
                 // Botão Voltar
                 OutlinedButton.icon(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_back),
-                  label: const Text('Voltar ao Site'),
+                  icon: const Icon(Icons.arrow_back, color: Color(0xFF9CA3AF)),
+                  label: const Text(
+                    'Voltar ao Site',
+                    style: TextStyle(color: Color(0xFF9CA3AF)),
+                  ),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    side: const BorderSide(color: AppColors.grey300),
+                    side: const BorderSide(color: Color(0xFF4B5563)),
                   ),
                 ),
               ],
@@ -182,6 +195,7 @@ class AdminHomePage extends StatelessWidget {
   }) {
     return Card(
       elevation: 4,
+      color: Color(0xFF374151),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         onTap: onTap,
@@ -193,7 +207,7 @@ class AdminHomePage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, size: 32, color: color),
@@ -208,7 +222,7 @@ class AdminHomePage extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -216,13 +230,13 @@ class AdminHomePage extends StatelessWidget {
                       subtitle,
                       style: const TextStyle(
                         fontSize: 14,
-                        color: AppColors.textSecondary,
+                        color: Color(0xFF9CA3AF),
                       ),
                     ),
                   ],
                 ),
               ),
-              Icon(Icons.arrow_forward_ios, color: AppColors.grey300, size: 20),
+              Icon(Icons.arrow_forward_ios, color: Color(0xFF9CA3AF), size: 20),
             ],
           ),
         ),

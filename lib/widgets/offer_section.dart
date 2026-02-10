@@ -61,7 +61,7 @@ class _OfferSectionState extends State<OfferSection> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Colors.grey.shade50, Colors.white],
+              colors: [Color(0xFF111827), Color(0xFF1F2937)],
             ),
           ),
           padding: EdgeInsets.symmetric(
@@ -82,7 +82,7 @@ class _OfferSectionState extends State<OfferSection> {
                     ),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.grey.shade700, Colors.grey.shade900],
+                        colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
                       ),
                       borderRadius: BorderRadius.circular(25),
                       boxShadow: [
@@ -109,14 +109,14 @@ class _OfferSectionState extends State<OfferSection> {
                     style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF111827),
+                      color: Colors.white,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
                   Text(
                     'Saiba para onde cada recurso está indo, vamos juntos edificar o Reino de Deus.',
-                    style: TextStyle(fontSize: 18, color: Colors.grey.shade700),
+                    style: TextStyle(fontSize: 18, color: Color(0xFF9CA3AF)),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 50),
@@ -129,7 +129,7 @@ class _OfferSectionState extends State<OfferSection> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF374151),
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -157,16 +157,16 @@ class _OfferSectionState extends State<OfferSection> {
                             gradient: selected
                                 ? LinearGradient(
                                     colors: [
-                                      Colors.grey.shade800,
-                                      Colors.grey.shade900,
+                                      Color(0xFFDC2626),
+                                      Color(0xFFB91C1C),
                                     ],
                                   )
                                 : null,
-                            color: selected ? null : Colors.white,
+                            color: selected ? null : Color(0xFF374151),
                             border: Border.all(
                               color: selected
                                   ? Colors.transparent
-                                  : Colors.grey.shade300,
+                                  : Color(0xFF4B5563),
                               width: 2,
                             ),
                             borderRadius: BorderRadius.circular(12),
@@ -208,13 +208,16 @@ class _OfferSectionState extends State<OfferSection> {
                         vertical: 14,
                       ),
                       decoration: BoxDecoration(
-                        color: showCustomInput
-                            ? Colors.grey.shade900
-                            : Colors.white,
+                        gradient: showCustomInput
+                            ? LinearGradient(
+                                colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
+                              )
+                            : null,
+                        color: showCustomInput ? null : Color(0xFF374151),
                         border: Border.all(
                           color: showCustomInput
                               ? Colors.transparent
-                              : Colors.grey.shade300,
+                              : Color(0xFF4B5563),
                           width: 2,
                         ),
                         borderRadius: BorderRadius.circular(12),
@@ -251,16 +254,26 @@ class _OfferSectionState extends State<OfferSection> {
                     TextField(
                       controller: _customValueController,
                       keyboardType: TextInputType.number,
+                      style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         labelText: 'Digite o valor',
-                        prefixText: 'R\$ ',
+                        labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
+                        prefixText: r'R$ ',
+                        prefixStyle: TextStyle(color: Colors.white),
+                        filled: true,
+                        fillColor: Color(0xFF374151),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF4B5563)),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF4B5563)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: Colors.grey.shade800,
+                            color: Color(0xFFDC2626),
                             width: 2,
                           ),
                         ),
@@ -281,13 +294,10 @@ class _OfferSectionState extends State<OfferSection> {
                       decoration: BoxDecoration(
                         gradient: _canProceed()
                             ? LinearGradient(
-                                colors: [
-                                  Colors.grey.shade700,
-                                  Colors.grey.shade900,
-                                ],
+                                colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
                               )
                             : null,
-                        color: _canProceed() ? null : Colors.grey.shade300,
+                        color: _canProceed() ? null : Color(0xFF4B5563),
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: _canProceed()
                             ? [
@@ -330,13 +340,13 @@ class _OfferSectionState extends State<OfferSection> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.lock, size: 16, color: Colors.grey.shade600),
+                      Icon(Icons.lock, size: 16, color: Color(0xFF9CA3AF)),
                       const SizedBox(width: 6),
                       Text(
                         'Transação segura e criptografada',
                         style: TextStyle(
                           fontSize: 13,
-                          color: Colors.grey.shade600,
+                          color: Color(0xFF9CA3AF),
                         ),
                       ),
                     ],
@@ -391,6 +401,7 @@ class _PixDialogState extends State<_PixDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Color(0xFF374151),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
         constraints: const BoxConstraints(maxWidth: 400),
@@ -402,13 +413,13 @@ class _PixDialogState extends State<_PixDialog> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.green.shade50,
+                color: Color(0xFF1F2937),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.check_circle,
                 size: 48,
-                color: Colors.green.shade600,
+                color: Color(0xFF059669),
               ),
             ),
             const SizedBox(height: 24),
@@ -419,7 +430,7 @@ class _PixDialogState extends State<_PixDialog> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF111827),
+                color: Colors.white,
               ),
             ),
             const SizedBox(height: 8),
@@ -430,7 +441,7 @@ class _PixDialogState extends State<_PixDialog> {
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey.shade800,
+                color: Color(0xFF059669),
               ),
             ),
             const SizedBox(height: 24),
@@ -442,12 +453,12 @@ class _PixDialogState extends State<_PixDialog> {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color(0xFF1F2937),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.shade300, width: 2),
+                  border: Border.all(color: Color(0xFF4B5563), width: 2),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.15),
+                      color: Colors.black.withOpacity(0.2),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -463,14 +474,14 @@ class _PixDialogState extends State<_PixDialog> {
                         Icon(
                           Icons.qr_code_2,
                           size: 80,
-                          color: Colors.grey.shade400,
+                          color: Color(0xFF9CA3AF),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'QR Code',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey.shade600,
+                            color: Color(0xFF9CA3AF),
                           ),
                         ),
                       ],
@@ -496,7 +507,7 @@ class _PixDialogState extends State<_PixDialog> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
-                color: Colors.grey.shade600,
+                color: Color(0xFF9CA3AF),
               ),
             ),
             const SizedBox(height: 24),
@@ -505,9 +516,9 @@ class _PixDialogState extends State<_PixDialog> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.blue.shade50,
+                color: Color(0xFF1F2937),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.blue.shade200),
+                border: Border.all(color: Color(0xFF4B5563)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -517,14 +528,14 @@ class _PixDialogState extends State<_PixDialog> {
                       Icon(
                         Icons.info_outline,
                         size: 16,
-                        color: Colors.blue.shade600,
+                        color: Color(0xFF60A5FA),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         'Código PIX (Brcode):',
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.blue.shade600,
+                          color: Color(0xFF60A5FA),
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -534,9 +545,9 @@ class _PixDialogState extends State<_PixDialog> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Color(0xFF374151),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.grey.shade300),
+                      border: Border.all(color: Color(0xFF4B5563)),
                     ),
                     child: Row(
                       children: [
@@ -548,14 +559,18 @@ class _PixDialogState extends State<_PixDialog> {
                               style: const TextStyle(
                                 fontSize: 11,
                                 fontFamily: 'monospace',
-                                color: Color(0xFF111827),
+                                color: Colors.white,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.copy, size: 18),
+                          icon: const Icon(
+                            Icons.copy,
+                            size: 18,
+                            color: Color(0xFF9CA3AF),
+                          ),
                           onPressed: () {
                             Clipboard.setData(ClipboardData(text: pixCode));
                             setState(() {
@@ -564,7 +579,7 @@ class _PixDialogState extends State<_PixDialog> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: const Text('Código PIX copiado!'),
-                                backgroundColor: Colors.green.shade600,
+                                backgroundColor: Color(0xFF059669),
                                 duration: const Duration(seconds: 2),
                               ),
                             );
@@ -592,7 +607,7 @@ class _PixDialogState extends State<_PixDialog> {
                 onPressed: () => Navigator.of(context).pop(),
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14),
-                  backgroundColor: Colors.grey.shade100,
+                  backgroundColor: Color(0xFF1F2937),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -602,7 +617,7 @@ class _PixDialogState extends State<_PixDialog> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF374151),
+                    color: Color(0xFF9CA3AF),
                   ),
                 ),
               ),

@@ -79,13 +79,7 @@ class TransmissionsSection extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.grey.shade100, Colors.white, Colors.grey.shade100],
-        ),
-      ),
+      decoration: BoxDecoration(color: Color(0xFF1F2937)),
       padding: EdgeInsets.symmetric(
         vertical: 60,
         horizontal: isMobile ? 24 : 48,
@@ -98,7 +92,7 @@ class TransmissionsSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.grey.shade700, Colors.grey.shade900],
+                colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
               ),
               borderRadius: BorderRadius.circular(25),
               boxShadow: [
@@ -125,14 +119,14 @@ class TransmissionsSection extends StatelessWidget {
             style: TextStyle(
               fontSize: 40,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF111827),
+              color: Colors.white,
             ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
           Text(
             'Acompanhe nossa programação 24 horas',
-            style: TextStyle(fontSize: 18, color: Colors.grey.shade700),
+            style: TextStyle(fontSize: 18, color: Color(0xFF9CA3AF)),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 50),
@@ -170,11 +164,11 @@ class TransmissionsSection extends StatelessWidget {
     return Container(
       width: width,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFF374151),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.15),
+            color: Colors.black.withOpacity(0.3),
             blurRadius: 20,
             offset: const Offset(0, 8),
             spreadRadius: 2,
@@ -237,7 +231,7 @@ class TransmissionsSection extends StatelessWidget {
                   item['description'] as String,
                   style: TextStyle(
                     fontSize: 15,
-                    color: Colors.grey.shade700,
+                    color: Color(0xFF9CA3AF),
                     height: 1.6,
                   ),
                 ),

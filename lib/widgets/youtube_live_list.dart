@@ -307,11 +307,13 @@ class _YouTubeLiveListState extends State<YouTubeLiveList> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CircularProgressIndicator(),
+                const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFDC2626)),
+                ),
                 const SizedBox(height: 16),
                 Text(
                   'Carregando transmissões...',
-                  style: theme.textTheme.bodyMedium,
+                  style: TextStyle(color: Color(0xFF9CA3AF)),
                 ),
               ],
             ),
@@ -326,17 +328,13 @@ class _YouTubeLiveListState extends State<YouTubeLiveList> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.error_outline,
-                    color: Colors.red.shade700,
-                    size: 48,
-                  ),
+                  Icon(Icons.error_outline, color: Color(0xFFDC2626), size: 48),
                   const SizedBox(height: 16),
                   Text(
                     'Não foi possível carregar as transmissões',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.red.shade700,
+                      color: Color(0xFFDC2626),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -344,15 +342,17 @@ class _YouTubeLiveListState extends State<YouTubeLiveList> {
                   Text(
                     snapshot.error.toString(),
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.grey.shade600,
-                    ),
+                    style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 12),
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton.icon(
                     onPressed: () => setState(() {
                       _future = _fetchLiveOrRecent();
                     }),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFDC2626),
+                      foregroundColor: Colors.white,
+                    ),
                     icon: const Icon(Icons.refresh),
                     label: const Text('Tentar novamente'),
                   ),
@@ -370,13 +370,11 @@ class _YouTubeLiveListState extends State<YouTubeLiveList> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.live_tv, size: 64, color: Colors.grey.shade400),
+                Icon(Icons.live_tv, size: 64, color: Color(0xFF9CA3AF)),
                 const SizedBox(height: 16),
                 Text(
                   'Nenhuma transmissão encontrada',
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 16, color: Color(0xFF9CA3AF)),
                 ),
               ],
             ),
@@ -413,12 +411,16 @@ class _YouTubeLiveListState extends State<YouTubeLiveList> {
                     },
                     icon: Icon(
                       needsRefresh ? Icons.refresh : Icons.cached,
-                      color: needsRefresh ? Colors.orange : Colors.grey,
+                      color: needsRefresh
+                          ? Color(0xFFDC2626)
+                          : Color(0xFF9CA3AF),
                     ),
                     label: Text(
                       needsRefresh ? 'Atualizar agora' : 'Usando cache',
                       style: TextStyle(
-                        color: needsRefresh ? Colors.orange : Colors.grey,
+                        color: needsRefresh
+                            ? Color(0xFFDC2626)
+                            : Color(0xFF9CA3AF),
                       ),
                     ),
                   );
@@ -435,14 +437,14 @@ class _YouTubeLiveListState extends State<YouTubeLiveList> {
                     Icon(
                       Icons.swipe_outlined,
                       size: 16,
-                      color: Colors.grey.shade500,
+                      color: Color(0xFF9CA3AF),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'Deslize para ver mais',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey.shade500,
+                        color: Color(0xFF9CA3AF),
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -491,17 +493,14 @@ class _YouTubeLiveListState extends State<YouTubeLiveList> {
                             end: Alignment.centerRight,
                             colors: [
                               Colors.transparent,
-                              (theme.brightness == Brightness.dark
-                                      ? Colors.grey.shade900
-                                      : Colors.white)
-                                  .withOpacity(0.9),
+                              Color(0xFF111827).withOpacity(0.9),
                             ],
                           ),
                         ),
                         child: Center(
                           child: Icon(
                             Icons.arrow_forward_ios,
-                            color: Colors.grey.shade600,
+                            color: Color(0xFF9CA3AF),
                             size: 20,
                           ),
                         ),
@@ -519,6 +518,7 @@ class _YouTubeLiveListState extends State<YouTubeLiveList> {
   Widget _buildVideoCard(BuildContext context, YouTubeVideo video) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: Color(0xFF374151),
       elevation: 8,
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -537,8 +537,11 @@ class _YouTubeLiveListState extends State<YouTubeLiveList> {
                     width: double.infinity,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        color: Colors.grey.shade300,
-                        child: const Icon(Icons.image_not_supported),
+                        color: Color(0xFF1F2937),
+                        child: const Icon(
+                          Icons.image_not_supported,
+                          color: Color(0xFF9CA3AF),
+                        ),
                       );
                     },
                   ),
@@ -554,11 +557,11 @@ class _YouTubeLiveListState extends State<YouTubeLiveList> {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.red.shade700,
+                        color: Color(0xFFDC2626),
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.red.shade700.withOpacity(0.5),
+                            color: Color(0xFFDC2626).withOpacity(0.5),
                             blurRadius: 8,
                           ),
                         ],
@@ -614,6 +617,7 @@ class _YouTubeLiveListState extends State<YouTubeLiveList> {
                       fontWeight: FontWeight.w600,
                       fontSize: 15,
                       height: 1.3,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -621,7 +625,7 @@ class _YouTubeLiveListState extends State<YouTubeLiveList> {
                     video.formattedDate,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey.shade600,
+                      color: Color(0xFF9CA3AF),
                       fontWeight: FontWeight.w500,
                     ),
                   ),

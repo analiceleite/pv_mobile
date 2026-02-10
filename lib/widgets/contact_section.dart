@@ -35,7 +35,7 @@ class ContactSection extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 32),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.white, Colors.grey.shade100],
+          colors: [Color(0xFF1F2937), Color(0xFF111827)],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -47,7 +47,7 @@ class ContactSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.grey.shade700, Colors.grey.shade900],
+                colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
               ),
               borderRadius: BorderRadius.circular(25),
               boxShadow: [
@@ -74,7 +74,7 @@ class ContactSection extends StatelessWidget {
             style: TextStyle(
               fontSize: 40,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF111827),
+              color: Colors.white,
             ),
             textAlign: TextAlign.center,
           ),
@@ -116,7 +116,11 @@ class ContactSection extends StatelessWidget {
       children: [
         const Text(
           '📞 Telefone: (47) 9925-3311',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 12),
         ElevatedButton.icon(
@@ -152,7 +156,11 @@ class ContactSection extends StatelessWidget {
       children: [
         const Text(
           '📍 Rua Fátima, 2597 - Fátima\nJoinville, SC',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 12),
         ElevatedButton.icon(
@@ -246,11 +254,11 @@ class _ContactCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFF374151),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withOpacity(0.3),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -259,20 +267,20 @@ class _ContactCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 40, color: Colors.red.shade700),
+          Icon(icon, size: 40, color: Color(0xFFDC2626)),
           const SizedBox(height: 16),
           Text(
             title,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF111827),
+              color: Colors.white,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             description,
-            style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+            style: TextStyle(fontSize: 16, color: Color(0xFF9CA3AF)),
           ),
           const SizedBox(height: 20),
           ...children,

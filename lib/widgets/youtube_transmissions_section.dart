@@ -11,13 +11,7 @@ class YouTubeTransmissionsSection extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.grey.shade900, Colors.grey.shade800],
-        ),
-      ),
+      decoration: BoxDecoration(color: Color(0xFF1F2937)),
       padding: EdgeInsets.symmetric(
         vertical: 60,
         horizontal: isMobile ? 24 : 48,

@@ -17,7 +17,10 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF1F2937),
       appBar: AppBar(
+        backgroundColor: Color(0xFF111827),
+        foregroundColor: Colors.white,
         title: const Text('Gerenciar Cultos'),
         centerTitle: true,
         elevation: 0,
@@ -26,68 +29,81 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
         onPressed: () => _navigateToForm(context),
         icon: const Icon(Icons.add),
         label: const Text('Novo Culto'),
-        backgroundColor: AppColors.primary,
+        backgroundColor: Color(0xFFDC2626),
+        foregroundColor: Colors.white,
       ),
-      body: StreamBuilder<List<Culto>>(
-        stream: _cultoService.getCultosStream(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF1F2937), Color(0xFF111827)],
+          ),
+        ),
+        child: StreamBuilder<List<Culto>>(
+          stream: _cultoService.getCultosStream(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (snapshot.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 64,
-                    color: AppColors.errorLight,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Erro ao carregar cultos',
-                    style: TextStyle(fontSize: 18, color: AppColors.error),
-                  ),
-                ],
-              ),
+            if (snapshot.hasError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 64,
+                      color: Color(0xFFDC2626),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Erro ao carregar cultos',
+                      style: TextStyle(fontSize: 18, color: Color(0xFFDC2626)),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            final cultos = snapshot.data ?? [];
+
+            if (cultos.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.church, size: 64, color: Color(0xFF9CA3AF)),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Nenhum culto cadastrado',
+                      style: TextStyle(fontSize: 18, color: Color(0xFF9CA3AF)),
+                    ),
+                    const SizedBox(height: 8),
+                    TextButton.icon(
+                      onPressed: () => _navigateToForm(context),
+                      icon: const Icon(Icons.add, color: Color(0xFFDC2626)),
+                      label: const Text('Adicionar primeiro culto'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Color(0xFFDC2626),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: cultos.length,
+              itemBuilder: (context, index) {
+                final culto = cultos[index];
+                return _buildCultoCard(context, culto);
+              },
             );
-          }
-
-          final cultos = snapshot.data ?? [];
-
-          if (cultos.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.church, size: 64, color: Colors.grey.shade300),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Nenhum culto cadastrado',
-                    style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
-                  ),
-                  const SizedBox(height: 8),
-                  TextButton.icon(
-                    onPressed: () => _navigateToForm(context),
-                    icon: const Icon(Icons.add),
-                    label: const Text('Adicionar primeiro culto'),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: cultos.length,
-            itemBuilder: (context, index) {
-              final culto = cultos[index];
-              return _buildCultoCard(context, culto);
-            },
-          );
-        },
+          },
+        ),
       ),
     );
   }
@@ -96,6 +112,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
+      color: Color(0xFF374151),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(
         children: [
@@ -148,7 +165,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
               children: [
                 Text(
                   culto.descricao,
-                  style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                  style: TextStyle(fontSize: 14, color: Colors.white),
                 ),
                 const SizedBox(height: 16),
 
@@ -161,7 +178,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
                       icon: const Icon(Icons.edit, size: 18),
                       label: const Text('Editar'),
                       style: TextButton.styleFrom(
-                        foregroundColor: Colors.blue.shade700,
+                        foregroundColor: Color(0xFF60A5FA),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -170,7 +187,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
                       icon: const Icon(Icons.delete, size: 18),
                       label: const Text('Excluir'),
                       style: TextButton.styleFrom(
-                        foregroundColor: Colors.red.shade700,
+                        foregroundColor: Color(0xFFDC2626),
                       ),
                     ),
                   ],
@@ -197,7 +214,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
                 ? 'Culto criado com sucesso!'
                 : 'Culto atualizado com sucesso!',
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: Color(0xFF059669),
         ),
       );
     }
@@ -207,16 +224,26 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirmar exclusão'),
-        content: Text('Deseja realmente excluir o culto "${culto.titulo}"?'),
+        backgroundColor: Color(0xFF374151),
+        title: const Text(
+          'Confirmar exclusão',
+          style: TextStyle(color: Colors.white),
+        ),
+        content: Text(
+          'Deseja realmente excluir o culto "${culto.titulo}"?',
+          style: TextStyle(color: Color(0xFF9CA3AF)),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancelar'),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Color(0xFF9CA3AF)),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: Color(0xFFDC2626)),
             child: const Text('Excluir'),
           ),
         ],
@@ -232,7 +259,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
             content: Text(
               success ? 'Culto excluído com sucesso!' : 'Erro ao excluir culto',
             ),
-            backgroundColor: success ? Colors.green : Colors.red,
+            backgroundColor: success ? Color(0xFF059669) : Color(0xFFDC2626),
           ),
         );
       }

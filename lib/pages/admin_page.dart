@@ -9,18 +9,18 @@ class AdminPage extends StatelessWidget {
     final isMobile = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: Color(0xFF111827),
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFF1F2937),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF111827)),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Configurações de Administração',
           style: TextStyle(
-            color: Color(0xFF111827),
+            color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -43,11 +43,11 @@ class AdminPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Color(0xFF374151),
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withValues(alpha: 0.1),
+                          color: Colors.black.withValues(alpha: 0.3),
                           blurRadius: 20,
                           offset: const Offset(0, 8),
                           spreadRadius: 2,
@@ -62,12 +62,12 @@ class AdminPage extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: Colors.blue.shade50,
+                                color: Color(0xFFDC2626).withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Icon(
                                 Icons.payment,
-                                color: Colors.blue.shade600,
+                                color: Color(0xFFDC2626),
                                 size: 28,
                               ),
                             ),
@@ -81,14 +81,14 @@ class AdminPage extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xFF111827),
+                                      color: Colors.white,
                                     ),
                                   ),
                                   Text(
                                     'Gerencie a chave PIX principal',
                                     style: TextStyle(
                                       fontSize: 14,
-                                      color: Colors.grey.shade600,
+                                      color: Color(0xFF9CA3AF),
                                     ),
                                   ),
                                 ],
@@ -101,7 +101,7 @@ class AdminPage extends StatelessWidget {
                           'Altere a chave PIX primária que será usada para as contribuições no app.',
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey.shade700,
+                            color: Color(0xFF9CA3AF),
                             height: 1.6,
                           ),
                         ),
@@ -118,7 +118,8 @@ class AdminPage extends StatelessWidget {
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),
-                              backgroundColor: Colors.blue.shade600,
+                              backgroundColor: Color(0xFFDC2626),
+                              foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -143,16 +144,16 @@ class AdminPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.amber.shade50,
+                      color: Color(0xFF92400E).withOpacity(0.3),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.amber.shade200),
+                      border: Border.all(color: Color(0xFFD97706)),
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(
                           Icons.info_outline,
-                          color: Colors.amber.shade700,
+                          color: Color(0xFFFBBF24),
                           size: 24,
                         ),
                         const SizedBox(width: 12),
@@ -165,7 +166,7 @@ class AdminPage extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.amber.shade900,
+                                  color: Color(0xFFFBBF24),
                                 ),
                               ),
                               const SizedBox(height: 4),
@@ -173,7 +174,7 @@ class AdminPage extends StatelessWidget {
                                 'Esta página deve ser acessada apenas pelo pastor ou administrador da igreja.',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Colors.amber.shade800,
+                                  color: Color(0xFFFCD34D),
                                   height: 1.5,
                                 ),
                               ),

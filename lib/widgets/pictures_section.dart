@@ -12,7 +12,7 @@ class PicturesSection extends StatelessWidget {
     final isMobile = MediaQuery.of(context).size.width < 600;
 
     return Container(
-      color: Colors.grey[200],
+      color: Color(0xFF1F2937),
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
       child: isMobile
@@ -25,7 +25,7 @@ class PicturesSection extends StatelessWidget {
   Widget _buildDriveButton() {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFFDC2626),
         foregroundColor: Colors.white,
         minimumSize: const Size(200, 50),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -57,14 +57,14 @@ class PicturesSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Icon(Icons.cloud, color: Colors.black, size: 64),
+              const Icon(Icons.cloud, color: Colors.white, size: 64),
               const SizedBox(height: 16),
               const Text(
                 'Fotos dos Cultos',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: Colors.white,
                 ),
               ),
               const SizedBox(height: 20),
@@ -100,7 +100,7 @@ class PicturesSection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.grey.shade700, Colors.grey.shade900],
+              colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
             ),
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
@@ -127,14 +127,14 @@ class PicturesSection extends StatelessWidget {
           style: TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF111827),
+            color: Colors.white,
           ),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 12),
         Text(
           'Acesse as fotos dos nossos cultos e eventos',
-          style: TextStyle(fontSize: 18, color: Colors.grey.shade700),
+          style: TextStyle(fontSize: 18, color: Color(0xFF9CA3AF)),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 50),
@@ -143,11 +143,15 @@ class PicturesSection extends StatelessWidget {
         _buildCardContainer(
           child: Column(
             children: [
-              const Icon(Icons.cloud, color: Colors.black, size: 60),
+              const Icon(Icons.cloud, color: Colors.white, size: 60),
               const SizedBox(height: 12),
               const Text(
                 'Fotos dos Cultos',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(height: 20),
               _buildDriveButton(),
@@ -175,11 +179,11 @@ class PicturesSection extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFF374151),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -200,7 +204,7 @@ class PicturesSection extends StatelessWidget {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: Colors.white,
             ),
           ),
           const SizedBox(height: 12),
@@ -231,7 +235,7 @@ class _TutorialStep extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 12,
-            backgroundColor: Colors.black,
+            backgroundColor: Color(0xFFDC2626),
             child: Text(
               number,
               style: const TextStyle(
@@ -247,7 +251,7 @@ class _TutorialStep extends StatelessWidget {
               text,
               style: const TextStyle(
                 fontSize: 16,
-                color: Colors.black54,
+                color: Color(0xFF9CA3AF),
                 height: 1.4,
               ),
             ),

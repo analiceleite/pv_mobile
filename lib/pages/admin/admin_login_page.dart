@@ -29,7 +29,10 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF1F2937),
       appBar: AppBar(
+        backgroundColor: Color(0xFF111827),
+        foregroundColor: Colors.white,
         title: const Text('Login Administrativo'),
         centerTitle: true,
         elevation: 0,
@@ -39,7 +42,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [AppColors.primary.withOpacity(0.1), AppColors.light],
+            colors: [Color(0xFF1F2937), Color(0xFF111827)],
           ),
         ),
         child: Center(
@@ -47,6 +50,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             padding: const EdgeInsets.all(24),
             child: Card(
               elevation: 8,
+              color: Color(0xFF374151),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -58,17 +62,26 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Ícone
+                      // Logo
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        width: 120,
+                        height: 120,
                         decoration: BoxDecoration(
-                          color: AppColors.primaryLight,
+                          color: Color(0xFF1F2937),
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(
-                          Icons.admin_panel_settings,
-                          size: 64,
-                          color: AppColors.primary,
+                        child: ClipOval(
+                          child: Image.asset(
+                            'assets/logo.jpg',
+                            width: 120,
+                            height: 120,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Icon(
+                              Icons.admin_panel_settings,
+                              size: 64,
+                              color: Color(0xFFDC2626),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -79,7 +92,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
+                          color: Colors.white,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -87,7 +100,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                         'Faça login para continuar',
                         style: TextStyle(
                           fontSize: 14,
-                          color: AppColors.textSecondary,
+                          color: Color(0xFF9CA3AF),
                         ),
                       ),
                       const SizedBox(height: 32),
@@ -96,12 +109,43 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       TextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
+                        style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           labelText: 'Email',
+                          labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
                           hintText: 'admin@igrejapv.com',
-                          prefixIcon: const Icon(Icons.email),
+                          hintStyle: TextStyle(color: Color(0xFF6B7280)),
+                          prefixIcon: const Icon(
+                            Icons.email,
+                            color: Color(0xFF9CA3AF),
+                          ),
+                          filled: true,
+                          fillColor: Color(0xFF1F2937),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFF4B5563)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFF4B5563)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Color(0xFFDC2626),
+                              width: 2,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFFDC2626)),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Color(0xFFDC2626),
+                              width: 2,
+                            ),
                           ),
                         ),
                         validator: (value) {
@@ -120,15 +164,22 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
+                        style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           labelText: 'Senha',
+                          labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
                           hintText: '••••••••',
-                          prefixIcon: const Icon(Icons.lock),
+                          hintStyle: TextStyle(color: Color(0xFF6B7280)),
+                          prefixIcon: const Icon(
+                            Icons.lock,
+                            color: Color(0xFF9CA3AF),
+                          ),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscurePassword
                                   ? Icons.visibility_off
                                   : Icons.visibility,
+                              color: Color(0xFF9CA3AF),
                             ),
                             onPressed: () {
                               setState(() {
@@ -136,8 +187,33 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                               });
                             },
                           ),
+                          filled: true,
+                          fillColor: Color(0xFF1F2937),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFF4B5563)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFF4B5563)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Color(0xFFDC2626),
+                              width: 2,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFFDC2626)),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Color(0xFFDC2626),
+                              width: 2,
+                            ),
                           ),
                         ),
                         validator: (value) {
@@ -159,7 +235,8 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                           onPressed: _isLoading ? null : _handleLogin,
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
-                            backgroundColor: AppColors.primary,
+                            backgroundColor: Color(0xFFDC2626),
+                            foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -171,7 +248,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                      AppColors.light,
+                                      Colors.white,
                                     ),
                                   ),
                                 )
@@ -189,6 +266,9 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       // Botão Voltar
                       TextButton(
                         onPressed: () => Navigator.pop(context),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Color(0xFF9CA3AF),
+                        ),
                         child: const Text('Voltar ao site'),
                       ),
                     ],

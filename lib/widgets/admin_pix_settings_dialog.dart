@@ -100,6 +100,7 @@ class _AdminPixSettingsDialogState extends State<AdminPixSettingsDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Color(0xFF374151),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
         constraints: const BoxConstraints(maxWidth: 500),
@@ -111,14 +112,14 @@ class _AdminPixSettingsDialogState extends State<AdminPixSettingsDialog> {
               // Header
               Row(
                 children: [
-                  Icon(Icons.settings, size: 28, color: Colors.blue.shade600),
+                  Icon(Icons.settings, size: 28, color: Color(0xFFDC2626)),
                   const SizedBox(width: 12),
                   const Text(
                     'Configurações PIX',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF111827),
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -192,7 +193,7 @@ class _AdminPixSettingsDialogState extends State<AdminPixSettingsDialog> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade700,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -200,16 +201,28 @@ class _AdminPixSettingsDialogState extends State<AdminPixSettingsDialog> {
                       controller: _pixKeyController,
                       keyboardType: TextInputType.number,
                       enabled: !_isSaving,
+                      style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         hintText: '000.000.000-00',
-                        prefixIcon: const Icon(Icons.key),
+                        hintStyle: TextStyle(color: Color(0xFF9CA3AF)),
+                        prefixIcon: const Icon(
+                          Icons.key,
+                          color: Color(0xFF9CA3AF),
+                        ),
+                        filled: true,
+                        fillColor: Color(0xFF1F2937),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF4B5563)),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF4B5563)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: Colors.blue.shade600,
+                            color: Color(0xFFDC2626),
                             width: 2,
                           ),
                         ),
@@ -228,23 +241,35 @@ class _AdminPixSettingsDialogState extends State<AdminPixSettingsDialog> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade700,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _churchNameController,
                       enabled: !_isSaving,
+                      style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         hintText: 'Ex: PV',
-                        prefixIcon: const Icon(Icons.church),
+                        hintStyle: TextStyle(color: Color(0xFF9CA3AF)),
+                        prefixIcon: const Icon(
+                          Icons.church,
+                          color: Color(0xFF9CA3AF),
+                        ),
+                        filled: true,
+                        fillColor: Color(0xFF1F2937),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF4B5563)),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF4B5563)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: Colors.blue.shade600,
+                            color: Color(0xFFDC2626),
                             width: 2,
                           ),
                         ),
@@ -263,23 +288,35 @@ class _AdminPixSettingsDialogState extends State<AdminPixSettingsDialog> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade700,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _cityController,
                       enabled: !_isSaving,
+                      style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         hintText: 'Ex: JOINVILLE',
-                        prefixIcon: const Icon(Icons.location_city),
+                        hintStyle: TextStyle(color: Color(0xFF9CA3AF)),
+                        prefixIcon: const Icon(
+                          Icons.location_city,
+                          color: Color(0xFF9CA3AF),
+                        ),
+                        filled: true,
+                        fillColor: Color(0xFF1F2937),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF4B5563)),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF4B5563)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: Colors.blue.shade600,
+                            color: Color(0xFFDC2626),
                             width: 2,
                           ),
                         ),
@@ -299,7 +336,7 @@ class _AdminPixSettingsDialogState extends State<AdminPixSettingsDialog> {
                             : () => Navigator.pop(context),
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          backgroundColor: Colors.grey.shade100,
+                          backgroundColor: Color(0xFF1F2937),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -309,7 +346,7 @@ class _AdminPixSettingsDialogState extends State<AdminPixSettingsDialog> {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF374151),
+                            color: Color(0xFF9CA3AF),
                           ),
                         ),
                       ),
@@ -320,8 +357,9 @@ class _AdminPixSettingsDialogState extends State<AdminPixSettingsDialog> {
                         onPressed: _isSaving ? null : _saveChanges,
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          backgroundColor: Colors.blue.shade600,
-                          disabledBackgroundColor: Colors.grey.shade300,
+                          backgroundColor: Color(0xFFDC2626),
+                          foregroundColor: Colors.white,
+                          disabledBackgroundColor: Color(0xFF4B5563),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),

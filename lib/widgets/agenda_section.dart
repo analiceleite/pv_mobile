@@ -12,13 +12,7 @@ class AgendaSection extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Colors.grey.shade50, Colors.white],
-        ),
-      ),
+      color: Color(0xFF1F2937),
       padding: EdgeInsets.symmetric(
         horizontal: isMobile ? 24 : 48,
         vertical: 60,
@@ -31,7 +25,7 @@ class AgendaSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.grey.shade700, Colors.grey.shade900],
+                colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
               ),
               borderRadius: BorderRadius.circular(25),
               boxShadow: [
@@ -58,14 +52,14 @@ class AgendaSection extends StatelessWidget {
             style: TextStyle(
               fontSize: 40,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF111827),
+              color: Colors.white,
             ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
           Text(
             'Participe dos nossos encontros e atividades',
-            style: TextStyle(fontSize: 18, color: Colors.grey.shade700),
+            style: TextStyle(fontSize: 18, color: Color(0xFF9CA3AF)),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 50),
@@ -115,11 +109,11 @@ class AgendaSection extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFF374151),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withOpacity(0.3),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -198,7 +192,7 @@ class AgendaSection extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -206,7 +200,7 @@ class AgendaSection extends StatelessWidget {
                   culto.descricao,
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey.shade600,
+                    color: Color(0xFF9CA3AF),
                     height: 1.5,
                   ),
                 ),
@@ -222,11 +216,11 @@ class AgendaSection extends StatelessWidget {
     return Container(
       width: 350,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFF374151),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withOpacity(0.3),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -254,11 +248,7 @@ class AgendaSection extends StatelessWidget {
                     color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(
-                    culto.getIcon(),
-                    color: Colors.white,
-                    size: 32,
-                  ),
+                  child: Icon(culto.getIcon(), color: Colors.white, size: 32),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -303,7 +293,7 @@ class AgendaSection extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -311,7 +301,7 @@ class AgendaSection extends StatelessWidget {
                   culto.descricao,
                   style: TextStyle(
                     fontSize: 15,
-                    color: Colors.grey.shade600,
+                    color: Color(0xFF9CA3AF),
                     height: 1.6,
                   ),
                 ),

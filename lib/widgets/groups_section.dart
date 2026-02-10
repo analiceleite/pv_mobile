@@ -65,7 +65,7 @@ class _GroupsSectionState extends State<GroupsSection> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [AppColors.light, AppColors.lightBg],
+          colors: [Color(0xFF1F2937), Color(0xFF111827)],
         ),
       ),
       padding: EdgeInsets.symmetric(
@@ -79,7 +79,9 @@ class _GroupsSectionState extends State<GroupsSection> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: AppColors.greyGradient),
+              gradient: LinearGradient(
+                colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
+              ),
               borderRadius: BorderRadius.circular(25),
               boxShadow: [
                 BoxShadow(
@@ -107,7 +109,7 @@ class _GroupsSectionState extends State<GroupsSection> {
             style: TextStyle(
               fontSize: 40,
               fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+              color: Colors.white,
             ),
             textAlign: TextAlign.center,
           ),
@@ -116,7 +118,7 @@ class _GroupsSectionState extends State<GroupsSection> {
           // 🔸 Descrição
           Text(
             'Encontre o grupo ideal para você e sua família',
-            style: TextStyle(fontSize: 18, color: AppColors.textSecondary),
+            style: TextStyle(fontSize: 18, color: Color(0xFF9CA3AF)),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 40),
@@ -127,19 +129,14 @@ class _GroupsSectionState extends State<GroupsSection> {
             child: TextField(
               controller: _searchController,
               onChanged: _filterGroups,
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: 'Pesquisar por grupo, líder ou endereço...',
-                hintStyle: const TextStyle(color: AppColors.textDisabled),
-                prefixIcon: const Icon(
-                  Icons.search,
-                  color: AppColors.textSecondary,
-                ),
+                hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
+                prefixIcon: const Icon(Icons.search, color: Color(0xFF9CA3AF)),
                 suffixIcon: _searchText.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(
-                          Icons.clear,
-                          color: AppColors.textSecondary,
-                        ),
+                        icon: const Icon(Icons.clear, color: Color(0xFF9CA3AF)),
                         onPressed: () {
                           setState(() {
                             _searchController.clear();
@@ -149,23 +146,23 @@ class _GroupsSectionState extends State<GroupsSection> {
                       )
                     : null,
                 filled: true,
-                fillColor: AppColors.light,
+                fillColor: Color(0xFF374151),
                 contentPadding: const EdgeInsets.symmetric(
                   vertical: 16,
                   horizontal: 20,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: AppColors.grey300),
+                  borderSide: const BorderSide(color: Color(0xFF4B5563)),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: AppColors.grey300),
+                  borderSide: const BorderSide(color: Color(0xFF4B5563)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: const BorderSide(
-                    color: AppColors.primary,
+                    color: Color(0xFFDC2626),
                     width: 2,
                   ),
                 ),
@@ -221,11 +218,11 @@ class _GroupsSectionState extends State<GroupsSection> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFF374151),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.15),
+            color: Colors.black.withOpacity(0.3),
             blurRadius: 20,
             offset: const Offset(0, 8),
             spreadRadius: 2,
@@ -306,8 +303,8 @@ class _GroupsSectionState extends State<GroupsSection> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: isLoading
-                ? [Colors.grey.shade600, Colors.grey.shade700]
-                : [Colors.red.shade600, Colors.red.shade700],
+                ? [Color(0xFF4B5563), Color(0xFF6B7280)]
+                : [Color(0xFFDC2626), Color(0xFFB91C1C)],
           ),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
@@ -439,10 +436,10 @@ class _GroupsSectionState extends State<GroupsSection> {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
+            color: Color(0xFF1F2937),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(icon, size: 20, color: Colors.grey.shade700),
+          child: Icon(icon, size: 20, color: Color(0xFF9CA3AF)),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -454,7 +451,7 @@ class _GroupsSectionState extends State<GroupsSection> {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: Colors.grey.shade600,
+                  color: Color(0xFF9CA3AF),
                 ),
               ),
               const SizedBox(height: 2),
@@ -463,7 +460,7 @@ class _GroupsSectionState extends State<GroupsSection> {
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF111827),
+                  color: Colors.white,
                 ),
               ),
             ],
@@ -479,20 +476,20 @@ class _GroupsSectionState extends State<GroupsSection> {
       padding: const EdgeInsets.all(40),
       child: Column(
         children: [
-          Icon(Icons.search_off, size: 64, color: Colors.grey.shade400),
+          Icon(Icons.search_off, size: 64, color: Color(0xFF6B7280)),
           const SizedBox(height: 16),
           Text(
             'Nenhum grupo encontrado',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: Colors.grey.shade600,
+              color: Color(0xFF9CA3AF),
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Tente buscar por outro termo',
-            style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
+            style: TextStyle(fontSize: 14, color: Color(0xFF9CA3AF)),
           ),
         ],
       ),
