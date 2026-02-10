@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
 import 'package:igrejapv_mobile/pages/admin/cultos_admin_page.dart';
+import '../../pages/admin_page.dart';
 import 'grupos_admin_page.dart';
 import '../../services/auth_service.dart';
 
@@ -129,6 +130,27 @@ class AdminHomePage extends StatelessWidget {
                     );
                   },
                 ),
+
+                const SizedBox(height: 20),
+
+                // Card Configurações PIX
+                _buildAdminCard(
+                  context,
+                  title: 'Configurações de Contribuição',
+                  subtitle: 'Gerenciar chave PIX e dados de contribuição',
+                  icon: Icons.payment,
+                  color: Colors.green.shade600,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminPage(),
+                      ),
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 20),
 
                 const Spacer(),
 
