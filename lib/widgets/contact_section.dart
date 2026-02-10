@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../services/location_service.dart';
+import 'package:geolocator/geolocator.dart';
 
 class ContactSection extends StatelessWidget {
   const ContactSection({super.key});
@@ -9,6 +11,19 @@ class ContactSection extends StatelessWidget {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
+  }
+
+  /// Mostra dialog com tempo de chegada baseado na localização do usuário
+  Future<void> _showDirectionsDialog(BuildContext context) async {
+    if (!context.mounted) return;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return _DirectionsDialog(onOpenMaps: _launchUrl);
+      },
+    );
   }
 
   @override
@@ -71,7 +86,7 @@ class ContactSection extends StatelessWidget {
                   children: [
                     _buildPastorContactCard(),
                     const SizedBox(height: 24),
-                    _buildAddressCard(),
+                    _buildAddressCard(context),
                     const SizedBox(height: 24),
                     _buildMapCard(),
                   ],
@@ -82,7 +97,7 @@ class ContactSection extends StatelessWidget {
                   children: [
                     Expanded(flex: 2, child: _buildPastorContactCard()),
                     const SizedBox(width: 24),
-                    Expanded(flex: 2, child: _buildAddressCard()),
+                    Expanded(flex: 2, child: _buildAddressCard(context)),
                     const SizedBox(width: 24),
                     Expanded(flex: 3, child: _buildMapCard()),
                   ],
@@ -100,7 +115,7 @@ class ContactSection extends StatelessWidget {
       description: 'Entre em contato diretamente com o Pastor João.',
       children: [
         const Text(
-          '📞 Telefone: (11) 99999-9999',
+          '📞 Telefone: (47) 9925-3311',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 12),
@@ -129,14 +144,14 @@ class ContactSection extends StatelessWidget {
   }
 
   // 📍 Card de endereço
-  Widget _buildAddressCard() {
+  Widget _buildAddressCard(BuildContext context) {
     return _ContactCard(
       icon: Icons.location_on,
       title: 'Endereço da Igreja',
       description: 'Visite nossa igreja e participe dos cultos presenciais.',
       children: [
         const Text(
-          '📍 Rua das Oliveiras, 45 - Centro\nSão Paulo, SP',
+          '📍 Rua Fátima, 2597 - Fátima\nJoinville, SC',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 12),
@@ -150,9 +165,7 @@ class ContactSection extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            const mapsUrl =
-                'https://www.google.com/maps/dir/?api=1&destination=-23.55052,-46.633308';
-            launchUrl(Uri.parse(mapsUrl), mode: LaunchMode.externalApplication);
+            _showDirectionsDialog(context);
           },
           icon: const Icon(Icons.map),
           label: const Text('Como chegar'),
@@ -164,7 +177,7 @@ class ContactSection extends StatelessWidget {
   // 🗺️ Mapa incorporado ou imagem com botão
   Widget _buildMapCard() {
     const embedUrl =
-        'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3576.2046372447267!2d-48.81872272368524!3d-26.319872368696483!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94deb16d92270513%3A0x81cfe7a619a3921f!2sR.%20F%C3%A1tima%2C%202597%20-%20F%C3%A1tima%2C%20Joinville%20-%20SC%2C%2089229-102!5e0!3m2!1spt-BR!2sbr!4v1761068904839!5m2!1spt-BR!2sbr';
+        'https://www.google.com/maps/dir/-26.3389184,-48.807936/R.+F%C3%A1tima,+2597+-+F%C3%A1tima,+Joinville+-+SC,+89229-102/@-26.3381633,-48.8142453,17z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x94deb147b5af363d:0x2b8b2b199cf9652d!2m2!1d-48.8172902!2d-26.3376893?entry=ttu&g_ep=EgoyMDI2MDIwNC4wIKXMDSoASAFQAw%3D%3D';
 
     return Container(
       height: 300,
@@ -265,6 +278,233 @@ class _ContactCard extends StatelessWidget {
           ...children,
         ],
       ),
+    );
+  }
+}
+
+/// Dialog que obtém localização do usuário e calcula tempo de chegada
+class _DirectionsDialog extends StatefulWidget {
+  final Function(String) onOpenMaps;
+
+  const _DirectionsDialog({required this.onOpenMaps});
+
+  @override
+  State<_DirectionsDialog> createState() => _DirectionsDialogState();
+}
+
+class _DirectionsDialogState extends State<_DirectionsDialog> {
+  bool _isLoading = true;
+  String? _errorMessage;
+  String? _travelTime;
+  String? _distance;
+  Position? _userLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDirections();
+  }
+
+  Future<void> _loadDirections() async {
+    try {
+      // Obtém localização do usuário
+      final position = await LocationService.getUserLocation();
+
+      if (position == null) {
+        setState(() {
+          _isLoading = false;
+          _errorMessage =
+              'Não foi possível obter sua localização.\n\nVerifique as permissões em Configurações.';
+        });
+        return;
+      }
+
+      setState(() {
+        _userLocation = position;
+      });
+
+      // Tenta obter informações de rota da API do Google Maps
+      final routeInfo = await LocationService.getRouteInfo(position);
+
+      if (routeInfo != null) {
+        setState(() {
+          _travelTime = routeInfo['duration'];
+          _distance = routeInfo['distance'];
+          _isLoading = false;
+        });
+      } else {
+        // Se falhar, calcula distância simples
+        final distanceKm = LocationService.calculateDistanceKm(
+          position.latitude,
+          position.longitude,
+        );
+
+        // Estima tempo (40 km/h em zona urbana)
+        final estimatedMinutes = ((distanceKm / 40 * 60).ceil());
+
+        setState(() {
+          _distance = '${distanceKm.toStringAsFixed(1)} km';
+          _travelTime = LocationService.estimateArrivalTime(
+            estimatedMinutes * 60,
+          );
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Erro ao calcular rota: $e';
+      });
+    }
+  }
+
+  void _openMapsWithDirections() {
+    if (_userLocation != null) {
+      final mapsUrl = LocationService.buildMapsUrl(
+        _userLocation!.latitude,
+        _userLocation!.longitude,
+      );
+      widget.onOpenMaps(mapsUrl);
+      Navigator.of(context).pop();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('📍 Como Chegar'),
+      content: SizedBox(
+        width: 300,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (_isLoading) ...[
+              const SizedBox(height: 20),
+              const CircularProgressIndicator(),
+              const SizedBox(height: 16),
+              const Text(
+                'Obtendo sua localização...',
+                style: TextStyle(fontSize: 14),
+              ),
+              const SizedBox(height: 20),
+            ] else if (_errorMessage != null) ...[
+              const SizedBox(height: 16),
+              Icon(
+                Icons.location_disabled,
+                size: 48,
+                color: Colors.red.shade400,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                _errorMessage!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14),
+              ),
+            ] else ...[
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.green.shade300),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.schedule,
+                          size: 20,
+                          color: Colors.green,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Tempo de chegada',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                _travelTime ?? '...',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.straighten,
+                          size: 20,
+                          color: Colors.blue,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Distância',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                _distance ?? '...',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                '📍 Igreja PV Joinville\nRua Fátima, 2597 - Fátima, Joinville, SC',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+            ],
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Cancelar'),
+        ),
+        if (!_isLoading && _errorMessage == null)
+          ElevatedButton.icon(
+            onPressed: _openMapsWithDirections,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red.shade700,
+              foregroundColor: Colors.white,
+            ),
+            icon: const Icon(Icons.map),
+            label: const Text('Abrir Google Maps'),
+          ),
+      ],
     );
   }
 }
