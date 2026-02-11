@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
-import '../../models/grupo_familiar.dart';
-import '../../services/grupo_familiar_service.dart';
-import 'grupo_form_page.dart';
+import '../../models/familiar_group.dart';
+import '../../services/familiar_groups_service.dart';
+import 'forms/familiar_group_form_page.dart';
 
-class GruposAdminPage extends StatefulWidget {
-  const GruposAdminPage({super.key});
+class AdminFamiliarGroupsPage extends StatefulWidget {
+  const AdminFamiliarGroupsPage({super.key});
 
   @override
-  State<GruposAdminPage> createState() => _GruposAdminPageState();
+  State<AdminFamiliarGroupsPage> createState() => _AdminFamiliarGroupsPageState();
 }
 
-class _GruposAdminPageState extends State<GruposAdminPage> {
-  final GrupoFamiliarService _grupoService = GrupoFamiliarService();
+class _AdminFamiliarGroupsPageState extends State<AdminFamiliarGroupsPage> {
+  final FamiliarGroupService _grupoService = FamiliarGroupService();
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
@@ -98,7 +98,7 @@ class _GruposAdminPageState extends State<GruposAdminPage> {
 
             // Lista de grupos
             Expanded(
-              child: StreamBuilder<List<GrupoFamiliar>>(
+              child: StreamBuilder<List<FamiliarGroup>>(
                 stream: _grupoService.getGruposStream(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -195,7 +195,7 @@ class _GruposAdminPageState extends State<GruposAdminPage> {
     );
   }
 
-  Widget _buildGrupoCard(BuildContext context, GrupoFamiliar grupo) {
+  Widget _buildGrupoCard(BuildContext context, FamiliarGroup grupo) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
@@ -294,11 +294,11 @@ class _GruposAdminPageState extends State<GruposAdminPage> {
 
   Future<void> _navigateToForm(
     BuildContext context, {
-    GrupoFamiliar? grupo,
+    FamiliarGroup? grupo,
   }) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => GrupoFormPage(grupo: grupo)),
+      MaterialPageRoute(builder: (context) => FamiliarGroupFormPage(grupo: grupo)),
     );
 
     if (result == true && mounted) {
@@ -315,7 +315,7 @@ class _GruposAdminPageState extends State<GruposAdminPage> {
     }
   }
 
-  Future<void> _confirmDelete(BuildContext context, GrupoFamiliar grupo) async {
+  Future<void> _confirmDelete(BuildContext context, FamiliarGroup grupo) async {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(

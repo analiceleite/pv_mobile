@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_colors.dart';
-import '../../models/culto.dart';
-import '../../services/culto_service.dart';
-import 'culto_form_page.dart';
+import '../../models/event.dart';
+import '../../services/event_service.dart';
+import 'forms/event_form_page.dart';
 
-class CultosAdminPage extends StatefulWidget {
-  const CultosAdminPage({super.key});
+class AdminEventsPage extends StatefulWidget {
+  const AdminEventsPage({super.key});
 
   @override
-  State<CultosAdminPage> createState() => _CultosAdminPageState();
+  State<AdminEventsPage> createState() => _AdminEventsPageState();
 }
 
-class _CultosAdminPageState extends State<CultosAdminPage> {
-  final CultoService _cultoService = CultoService();
+class _AdminEventsPageState extends State<AdminEventsPage> {
+  final EventService _eventService = EventService();
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +20,14 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
       appBar: AppBar(
         backgroundColor: Color(0xFF111827),
         foregroundColor: Colors.white,
-        title: const Text('Gerenciar Cultos'),
+        title: const Text('Gerenciar Eventos'),
         centerTitle: true,
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _navigateToForm(context),
         icon: const Icon(Icons.add),
-        label: const Text('Novo Culto'),
+        label: const Text('Novo Evento'),
         backgroundColor: Color(0xFFDC2626),
         foregroundColor: Colors.white,
       ),
@@ -40,8 +39,8 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
             colors: [Color(0xFF1F2937), Color(0xFF111827)],
           ),
         ),
-        child: StreamBuilder<List<Culto>>(
-          stream: _cultoService.getCultosStream(),
+        child: StreamBuilder<List<Event>>(
+          stream: _eventService.getEventsStream(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -67,9 +66,9 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
               );
             }
 
-            final cultos = snapshot.data ?? [];
+            final eventos = snapshot.data ?? [];
 
-            if (cultos.isEmpty) {
+            if (eventos.isEmpty) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -77,14 +76,14 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
                     Icon(Icons.church, size: 64, color: Color(0xFF9CA3AF)),
                     const SizedBox(height: 16),
                     Text(
-                      'Nenhum culto cadastrado',
+                      'Nenhum evento cadastrado',
                       style: TextStyle(fontSize: 18, color: Color(0xFF9CA3AF)),
                     ),
                     const SizedBox(height: 8),
                     TextButton.icon(
                       onPressed: () => _navigateToForm(context),
                       icon: const Icon(Icons.add, color: Color(0xFFDC2626)),
-                      label: const Text('Adicionar primeiro culto'),
+                      label: const Text('Adicionar primeiro evento'),
                       style: TextButton.styleFrom(
                         foregroundColor: Color(0xFFDC2626),
                       ),
@@ -96,10 +95,10 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
 
             return ListView.builder(
               padding: const EdgeInsets.all(16),
-              itemCount: cultos.length,
+              itemCount: eventos.length,
               itemBuilder: (context, index) {
-                final culto = cultos[index];
-                return _buildCultoCard(context, culto);
+                final evento = eventos[index];
+                return _buildEventCard(context, evento);
               },
             );
           },
@@ -108,7 +107,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
     );
   }
 
-  Widget _buildCultoCard(BuildContext context, Culto culto) {
+  Widget _buildEventCard(BuildContext context, Event evento) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
@@ -120,7 +119,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: culto.getColor(),
+              color: evento.getColor(),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
@@ -128,14 +127,14 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
             ),
             child: Row(
               children: [
-                Icon(culto.getIcon(), color: Colors.white, size: 28),
+                Icon(evento.getIcon(), color: Colors.white, size: 28),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        culto.titulo,
+                        evento.titulo,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -144,7 +143,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${culto.dia} às ${culto.horario}',
+                        '${evento.dia} às ${evento.horario}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -164,7 +163,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  culto.descricao,
+                  evento.descricao,
                   style: TextStyle(fontSize: 14, color: Colors.white),
                 ),
                 const SizedBox(height: 16),
@@ -174,7 +173,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton.icon(
-                      onPressed: () => _navigateToForm(context, culto: culto),
+                      onPressed: () => _navigateToForm(context, evento: evento),
                       icon: const Icon(Icons.edit, size: 18),
                       label: const Text('Editar'),
                       style: TextButton.styleFrom(
@@ -183,7 +182,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
                     ),
                     const SizedBox(width: 8),
                     TextButton.icon(
-                      onPressed: () => _confirmDelete(context, culto),
+                      onPressed: () => _confirmDelete(context, evento),
                       icon: const Icon(Icons.delete, size: 18),
                       label: const Text('Excluir'),
                       style: TextButton.styleFrom(
@@ -200,19 +199,19 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
     );
   }
 
-  Future<void> _navigateToForm(BuildContext context, {Culto? culto}) async {
+  Future<void> _navigateToForm(BuildContext context, {Event? evento}) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => CultoFormPage(culto: culto)),
+      MaterialPageRoute(builder: (context) => EventFormPage(culto: evento)),
     );
 
     if (result == true && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            culto == null
-                ? 'Culto criado com sucesso!'
-                : 'Culto atualizado com sucesso!',
+            evento == null
+                ? 'Evento criado com sucesso!'
+                : 'Evento atualizado com sucesso!',
           ),
           backgroundColor: Color(0xFF059669),
         ),
@@ -220,7 +219,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
     }
   }
 
-  Future<void> _confirmDelete(BuildContext context, Culto culto) async {
+  Future<void> _confirmDelete(BuildContext context, Event evento) async {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -230,7 +229,7 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
           style: TextStyle(color: Colors.white),
         ),
         content: Text(
-          'Deseja realmente excluir o culto "${culto.titulo}"?',
+          'Deseja realmente excluir o evento "${evento.titulo}"?',
           style: TextStyle(color: Color(0xFF9CA3AF)),
         ),
         actions: [
@@ -250,14 +249,14 @@ class _CultosAdminPageState extends State<CultosAdminPage> {
       ),
     );
 
-    if (confirm == true && culto.id != null) {
-      final success = await _cultoService.deleteCulto(culto.id!);
+    if (confirm == true && evento.id != null) {
+      final success = await _eventService.deleteEvent(evento.id!);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              success ? 'Culto excluído com sucesso!' : 'Erro ao excluir culto',
+              success ? 'Evento excluído com sucesso!' : 'Erro ao excluir evento',
             ),
             backgroundColor: success ? Color(0xFF059669) : Color(0xFFDC2626),
           ),

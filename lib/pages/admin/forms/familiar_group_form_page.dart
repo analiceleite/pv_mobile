@@ -1,85 +1,89 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_colors.dart';
-import '../../models/culto.dart';
-import '../../services/culto_service.dart';
+import '../../../models/familiar_group.dart';
+import '../../../services/familiar_groups_service.dart';
 
-class CultoFormPage extends StatefulWidget {
-  final Culto? culto;
+class FamiliarGroupFormPage extends StatefulWidget {
+  final FamiliarGroup? grupo;
 
-  const CultoFormPage({super.key, this.culto});
+  const FamiliarGroupFormPage({super.key, this.grupo});
 
   @override
-  State<CultoFormPage> createState() => _CultoFormPageState();
+  State<FamiliarGroupFormPage> createState() => _FamiliarGroupFormPageState();
 }
 
-class _CultoFormPageState extends State<CultoFormPage> {
+class _FamiliarGroupFormPageState extends State<FamiliarGroupFormPage> {
   final _formKey = GlobalKey<FormState>();
-  final CultoService _cultoService = CultoService();
+  final FamiliarGroupService _grupoService = FamiliarGroupService();
 
-  late TextEditingController _diaController;
+  late TextEditingController _nomeController;
+  late TextEditingController _enderecoController;
+  late TextEditingController _liderController;
   late TextEditingController _horarioController;
-  late TextEditingController _tituloController;
-  late TextEditingController _descricaoController;
+  late TextEditingController _whatsappController;
 
-  String _selectedIcon = 'church';
-  String _selectedColor = '#B71C1C';
+  String _selectedIcon = 'location_city';
+  String _selectedColor = '#1F2937';
   bool _isLoading = false;
 
   final Map<String, IconData> _availableIcons = {
-    'church': Icons.church,
+    'location_city': Icons.location_city,
+    'home': Icons.home,
+    'home_work': Icons.home_work,
     'groups': Icons.groups,
-    'favorite': Icons.favorite,
-    'celebration': Icons.celebration,
     'people': Icons.people,
-    'event': Icons.event,
+    'group': Icons.group,
   };
 
   final List<Map<String, String>> _availableColors = [
-    {'name': 'Vermelho', 'hex': '#B71C1C'},
-    {'name': 'Laranja', 'hex': '#E65100'},
+    {'name': 'Cinza Escuro', 'hex': '#1F2937'},
+    {'name': 'Cinza Médio', 'hex': '#374151'},
+    {'name': 'Cinza Claro', 'hex': '#4B5563'},
     {'name': 'Azul', 'hex': '#1565C0'},
     {'name': 'Verde', 'hex': '#2E7D32'},
     {'name': 'Roxo', 'hex': '#6A1B9A'},
-    {'name': 'Cinza Escuro', 'hex': '#424242'},
   ];
 
   @override
   void initState() {
     super.initState();
-    _diaController = TextEditingController(text: widget.culto?.dia ?? '');
-    _horarioController = TextEditingController(
-      text: widget.culto?.horario ?? '',
+    _nomeController = TextEditingController(text: widget.grupo?.nome ?? '');
+    _enderecoController = TextEditingController(
+      text: widget.grupo?.endereco ?? '',
     );
-    _tituloController = TextEditingController(text: widget.culto?.titulo ?? '');
-    _descricaoController = TextEditingController(
-      text: widget.culto?.descricao ?? '',
+    _liderController = TextEditingController(text: widget.grupo?.lider ?? '');
+    _horarioController = TextEditingController(
+      text: widget.grupo?.horario ?? '',
+    );
+    _whatsappController = TextEditingController(
+      text: widget.grupo?.whatsapp ?? '',
     );
 
-    if (widget.culto != null) {
-      _selectedIcon = widget.culto!.iconName;
-      _selectedColor = widget.culto!.colorHex;
+    if (widget.grupo != null) {
+      _selectedIcon = widget.grupo!.iconName;
+      _selectedColor = widget.grupo!.colorHex;
     }
   }
 
   @override
   void dispose() {
-    _diaController.dispose();
+    _nomeController.dispose();
+    _enderecoController.dispose();
+    _liderController.dispose();
     _horarioController.dispose();
-    _tituloController.dispose();
-    _descricaoController.dispose();
+    _whatsappController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isEditing = widget.culto != null;
+    final isEditing = widget.grupo != null;
 
     return Scaffold(
       backgroundColor: Color(0xFF1F2937),
       appBar: AppBar(
         backgroundColor: Color(0xFF111827),
         foregroundColor: Colors.white,
-        title: Text(isEditing ? 'Editar Culto' : 'Novo Culto'),
+        title: Text(isEditing ? 'Editar Grupo' : 'Novo Grupo'),
         centerTitle: true,
         elevation: 0,
       ),
@@ -96,16 +100,16 @@ class _CultoFormPageState extends State<CultoFormPage> {
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              // Campo Título
+              // Campo Nome
               TextFormField(
-                controller: _tituloController,
+                controller: _nomeController,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: 'Título do Culto',
+                  labelText: 'Nome do Grupo',
                   labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
-                  hintText: 'Ex: Culto de Celebração',
+                  hintText: 'Ex: Grupo Família Abençoada',
                   hintStyle: TextStyle(color: Color(0xFF6B7280)),
-                  prefixIcon: Icon(Icons.title, color: Color(0xFF9CA3AF)),
+                  prefixIcon: Icon(Icons.group, color: Color(0xFF9CA3AF)),
                   filled: true,
                   fillColor: Color(0xFF374151),
                   border: OutlineInputBorder(
@@ -131,26 +135,23 @@ class _CultoFormPageState extends State<CultoFormPage> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, informe o título';
+                    return 'Por favor, informe o nome';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
 
-              // Campo Dia
+              // Campo Líder
               TextFormField(
-                controller: _diaController,
+                controller: _liderController,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: 'Dia da Semana',
+                  labelText: 'Líder',
                   labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
-                  hintText: 'Ex: Domingo',
+                  hintText: 'Ex: João e Maria Silva',
                   hintStyle: TextStyle(color: Color(0xFF6B7280)),
-                  prefixIcon: Icon(
-                    Icons.calendar_today,
-                    color: Color(0xFF9CA3AF),
-                  ),
+                  prefixIcon: Icon(Icons.person, color: Color(0xFF9CA3AF)),
                   filled: true,
                   fillColor: Color(0xFF374151),
                   border: OutlineInputBorder(
@@ -176,7 +177,49 @@ class _CultoFormPageState extends State<CultoFormPage> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, informe o dia';
+                    return 'Por favor, informe o líder';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // Campo Endereço
+              TextFormField(
+                controller: _enderecoController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Endereço',
+                  labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
+                  hintText: 'Ex: Rua das Flores, 123',
+                  hintStyle: TextStyle(color: Color(0xFF6B7280)),
+                  prefixIcon: Icon(Icons.location_on, color: Color(0xFF9CA3AF)),
+                  filled: true,
+                  fillColor: Color(0xFF374151),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF4B5563)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF4B5563)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626)),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, informe o endereço';
                   }
                   return null;
                 },
@@ -190,7 +233,7 @@ class _CultoFormPageState extends State<CultoFormPage> {
                 decoration: InputDecoration(
                   labelText: 'Horário',
                   labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
-                  hintText: 'Ex: 19h00',
+                  hintText: 'Ex: Quintas às 19h30',
                   hintStyle: TextStyle(color: Color(0xFF6B7280)),
                   prefixIcon: Icon(Icons.access_time, color: Color(0xFF9CA3AF)),
                   filled: true,
@@ -225,18 +268,17 @@ class _CultoFormPageState extends State<CultoFormPage> {
               ),
               const SizedBox(height: 16),
 
-              // Campo Descrição
+              // Campo WhatsApp
               TextFormField(
-                controller: _descricaoController,
-                maxLines: 3,
+                controller: _whatsappController,
+                keyboardType: TextInputType.phone,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: 'Descrição',
+                  labelText: 'WhatsApp',
                   labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
-                  hintText: 'Descreva brevemente o culto',
+                  hintText: 'Ex: https://wa.me/5511999999999',
                   hintStyle: TextStyle(color: Color(0xFF6B7280)),
-                  prefixIcon: Icon(Icons.description, color: Color(0xFF9CA3AF)),
-                  alignLabelWithHint: true,
+                  prefixIcon: Icon(Icons.phone, color: Color(0xFF9CA3AF)),
                   filled: true,
                   fillColor: Color(0xFF374151),
                   border: OutlineInputBorder(
@@ -262,7 +304,7 @@ class _CultoFormPageState extends State<CultoFormPage> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, informe a descrição';
+                    return 'Por favor, informe o WhatsApp';
                   }
                   return null;
                 },
@@ -372,7 +414,7 @@ class _CultoFormPageState extends State<CultoFormPage> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: _isLoading ? null : _saveCulto,
+                      onPressed: _isLoading ? null : _saveGrupo,
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         backgroundColor: Color(0xFFDC2626),
@@ -401,7 +443,7 @@ class _CultoFormPageState extends State<CultoFormPage> {
     );
   }
 
-  Future<void> _saveCulto() async {
+  Future<void> _saveGrupo() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -409,24 +451,25 @@ class _CultoFormPageState extends State<CultoFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final culto = Culto(
-        id: widget.culto?.id,
-        dia: _diaController.text.trim(),
+      final grupo = FamiliarGroup(
+        id: widget.grupo?.id,
+        nome: _nomeController.text.trim(),
+        endereco: _enderecoController.text.trim(),
+        lider: _liderController.text.trim(),
         horario: _horarioController.text.trim(),
-        titulo: _tituloController.text.trim(),
-        descricao: _descricaoController.text.trim(),
+        whatsapp: _whatsappController.text.trim(),
         iconName: _selectedIcon,
         colorHex: _selectedColor,
       );
 
       bool success;
-      if (widget.culto == null) {
+      if (widget.grupo == null) {
         // Criar novo
-        final id = await _cultoService.createCulto(culto);
+        final id = await _grupoService.createGrupo(grupo);
         success = id != null;
       } else {
         // Atualizar existente
-        success = await _cultoService.updateCulto(widget.culto!.id!, culto);
+        success = await _grupoService.updateGrupo(widget.grupo!.id!, grupo);
       }
 
       if (mounted) {
@@ -435,7 +478,7 @@ class _CultoFormPageState extends State<CultoFormPage> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Erro ao salvar culto'),
+              content: Text('Erro ao salvar grupo'),
               backgroundColor: Color(0xFFDC2626),
             ),
           );

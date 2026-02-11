@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class Culto {
+class Event {
   final String? id;
   final String dia;
   final String horario;
@@ -10,7 +10,7 @@ class Culto {
   final String iconName;
   final String colorHex;
 
-  Culto({
+  Event({
     this.id,
     required this.dia,
     required this.horario,
@@ -20,9 +20,8 @@ class Culto {
     required this.colorHex,
   });
 
-  // Converter de Map para Culto
-  factory Culto.fromMap(Map<String, dynamic> map, String id) {
-    return Culto(
+  factory Event.fromMap(Map<String, dynamic> map, String id) {
+    return Event(
       id: id,
       dia: map['dia'] ?? '',
       horario: map['horario'] ?? '',
@@ -33,13 +32,13 @@ class Culto {
     );
   }
 
-  // Converter de Firestore Document para Culto
-  factory Culto.fromFirestore(DocumentSnapshot doc) {
+  // Converter de Firestore Document para Event
+  factory Event.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-    return Culto.fromMap(data, doc.id);
+    return Event.fromMap(data, doc.id);
   }
 
-  // Converter Culto para Map
+  // Converter Event para Map
   Map<String, dynamic> toMap() {
     return {
       'dia': dia,
@@ -75,7 +74,7 @@ class Culto {
   }
 
   // Copiar com novos valores
-  Culto copyWith({
+  Event copyWith({
     String? id,
     String? dia,
     String? horario,
@@ -84,7 +83,7 @@ class Culto {
     String? iconName,
     String? colorHex,
   }) {
-    return Culto(
+    return Event(
       id: id ?? this.id,
       dia: dia ?? this.dia,
       horario: horario ?? this.horario,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:igrejapv_mobile/widgets/admin_pix_settings_dialog.dart';
+import 'package:igrejapv_mobile/widgets/admin/admin_pix_settings_dialog.dart';
 
-class AdminPage extends StatelessWidget {
-  const AdminPage({super.key});
+class AdminPixPage extends StatelessWidget {
+  const AdminPixPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class AdminPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          'Configurações de Administração',
+          'Gerenciar Chave PIX',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,

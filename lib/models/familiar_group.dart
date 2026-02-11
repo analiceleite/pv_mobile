@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class GrupoFamiliar {
+class FamiliarGroup {
   final String? id;
   final String nome;
   final String endereco;
@@ -11,7 +11,7 @@ class GrupoFamiliar {
   final String iconName;
   final String colorHex;
 
-  GrupoFamiliar({
+  FamiliarGroup({
     this.id,
     required this.nome,
     required this.endereco,
@@ -22,9 +22,9 @@ class GrupoFamiliar {
     required this.colorHex,
   });
 
-  // Converter de Map para GrupoFamiliar
-  factory GrupoFamiliar.fromMap(Map<String, dynamic> map, String id) {
-    return GrupoFamiliar(
+  // Converter de Map para FamiliarGroup
+  factory FamiliarGroup.fromMap(Map<String, dynamic> map, String id) {
+    return FamiliarGroup(
       id: id,
       nome: map['nome'] ?? '',
       endereco: map['endereco'] ?? '',
@@ -36,13 +36,13 @@ class GrupoFamiliar {
     );
   }
 
-  // Converter de Firestore Document para GrupoFamiliar
-  factory GrupoFamiliar.fromFirestore(DocumentSnapshot doc) {
+  // Converter de Firestore Document para FamiliarGroup
+  factory FamiliarGroup.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-    return GrupoFamiliar.fromMap(data, doc.id);
+    return FamiliarGroup.fromMap(data, doc.id);
   }
 
-  // Converter GrupoFamiliar para Map
+  // Converter FamiliarGroup para Map
   Map<String, dynamic> toMap() {
     return {
       'nome': nome,
@@ -79,7 +79,7 @@ class GrupoFamiliar {
   }
 
   // Copiar com novos valores
-  GrupoFamiliar copyWith({
+  FamiliarGroup copyWith({
     String? id,
     String? nome,
     String? endereco,
@@ -89,7 +89,7 @@ class GrupoFamiliar {
     String? iconName,
     String? colorHex,
   }) {
-    return GrupoFamiliar(
+    return FamiliarGroup(
       id: id ?? this.id,
       nome: nome ?? this.nome,
       endereco: endereco ?? this.endereco,

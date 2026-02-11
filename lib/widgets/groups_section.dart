@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../models/grupo_familiar.dart';
-import '../services/grupo_familiar_service.dart';
+import '../models/familiar_group.dart';
+import '../services/familiar_groups_service.dart';
 import '../theme/app_colors.dart';
 
 class GroupsSection extends StatefulWidget {
@@ -13,10 +13,10 @@ class GroupsSection extends StatefulWidget {
 
 class _GroupsSectionState extends State<GroupsSection> {
   final TextEditingController _searchController = TextEditingController();
-  final GrupoFamiliarService _grupoService = GrupoFamiliarService();
+  final FamiliarGroupService _grupoService = FamiliarGroupService();
   String _searchText = '';
-  List<GrupoFamiliar> _allGroups = [];
-  List<GrupoFamiliar> _filteredGroups = [];
+  List<FamiliarGroup> _allGroups = [];
+  List<FamiliarGroup> _filteredGroups = [];
   String? _loadingGroupId; // Para controlar o estado de carregamento
 
   @override
@@ -213,7 +213,7 @@ class _GroupsSectionState extends State<GroupsSection> {
   }
 
   // 🔹 Card de cada grupo
-  Widget _buildGroupCard(GrupoFamiliar g) {
+  Widget _buildGroupCard(FamiliarGroup g) {
     final color = g.getColor();
 
     return Container(
@@ -291,7 +291,7 @@ class _GroupsSectionState extends State<GroupsSection> {
   }
 
   // 🔸 Botão WhatsApp com validação
-  Widget _buildWhatsAppButton(GrupoFamiliar g) {
+  Widget _buildWhatsAppButton(FamiliarGroup g) {
     final isLoading = _loadingGroupId == g.id;
 
     return GestureDetector(
@@ -348,7 +348,7 @@ class _GroupsSectionState extends State<GroupsSection> {
   }
 
   // 🔸 Função para abrir WhatsApp
-  Future<void> _openWhatsApp(GrupoFamiliar g) async {
+  Future<void> _openWhatsApp(FamiliarGroup g) async {
     // Validar se tem telefone cadastrado
     if (g.whatsapp.isEmpty) {
       if (mounted) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
-import 'package:igrejapv_mobile/pages/admin/cultos_admin_page.dart';
-import '../../pages/admin_page.dart';
-import 'grupos_admin_page.dart';
+import 'package:igrejapv_mobile/pages/admin/admin_events_page.dart';
+import 'admin_pix_page.dart';
+import 'admin_familiar_groups_page.dart';
 import '../../services/auth_service.dart';
 
 class AdminHomePage extends StatelessWidget {
@@ -76,108 +76,111 @@ class AdminHomePage extends StatelessWidget {
           ),
         ),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 20),
-                const Icon(
-                  Icons.admin_panel_settings,
-                  size: 80,
-                  color: Color(0xFFDC2626),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Área Administrativa',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 20),
+                  const Icon(
+                    Icons.admin_panel_settings,
+                    size: 80,
+                    color: Color(0xFFDC2626),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Gerencie cultos e grupos familiares',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: Color(0xFF9CA3AF)),
-                ),
-                const SizedBox(height: 50),
-
-                // Card Gerenciar Cultos
-                _buildAdminCard(
-                  context,
-                  title: 'Gerenciar Cultos',
-                  subtitle: 'Adicionar, editar ou remover cultos da agenda',
-                  icon: Icons.church,
-                  color: AppColors.primary,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CultosAdminPage(),
-                      ),
-                    );
-                  },
-                ),
-
-                const SizedBox(height: 20),
-
-                // Card Gerenciar Grupos
-                _buildAdminCard(
-                  context,
-                  title: 'Gerenciar Grupos Familiares',
-                  subtitle: 'Adicionar, editar ou remover grupos',
-                  icon: Icons.groups,
-                  color: AppColors.primary,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const GruposAdminPage(),
-                      ),
-                    );
-                  },
-                ),
-
-                const SizedBox(height: 20),
-
-                // Card Configurações PIX
-                _buildAdminCard(
-                  context,
-                  title: 'Configurações de Contribuição',
-                  subtitle: 'Gerenciar chave PIX e dados de contribuição',
-                  icon: Icons.payment,
-                  color: Color(0xFFDC2626),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AdminPage(),
-                      ),
-                    );
-                  },
-                ),
-
-                const SizedBox(height: 20),
-
-                const Spacer(),
-
-                // Botão Voltar
-                OutlinedButton.icon(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_back, color: Color(0xFF9CA3AF)),
-                  label: const Text(
-                    'Voltar ao Site',
-                    style: TextStyle(color: Color(0xFF9CA3AF)),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Área Administrativa',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    side: const BorderSide(color: Color(0xFF4B5563)),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Gerencie eventos, grupos e contribuições do aplicativo',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, color: Color(0xFF9CA3AF)),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 50),
+
+                  // Card Gerenciar Eventos
+                  _buildAdminCard(
+                    context,
+                    title: 'Gerenciar Eventos da Agenda',
+                    subtitle: 'Adicionar, editar ou remover eventos da agenda',
+                    icon: Icons.church,
+                    color: AppColors.primary,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminEventsPage(),
+                        ),
+                      );
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Card Gerenciar Grupos
+                  _buildAdminCard(
+                    context,
+                    title: 'Gerenciar Grupos Familiares',
+                    subtitle: 'Adicionar, editar ou remover grupos',
+                    icon: Icons.groups,
+                    color: AppColors.primary,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminFamiliarGroupsPage(),
+                        ),
+                      );
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Card Configurações PIX
+                  _buildAdminCard(
+                    context,
+                    title: 'Configurações de Contribuição',
+                    subtitle: 'Gerenciar chave PIX e dados de contribuição',
+                    icon: Icons.payment,
+                    color: Color(0xFFDC2626),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminPixPage(),
+                        ),
+                      );
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Botão Voltar
+                  OutlinedButton.icon(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Color(0xFF9CA3AF),
+                    ),
+                    label: const Text(
+                      'Voltar ao Site',
+                      style: TextStyle(color: Color(0xFF9CA3AF)),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      side: const BorderSide(color: Color(0xFF4B5563)),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -236,7 +239,11 @@ class AdminHomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(Icons.arrow_forward_ios, color: Color(0xFF9CA3AF), size: 20),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: Color.fromARGB(255, 92, 134, 207),
+                size: 20,
+              ),
             ],
           ),
         ),

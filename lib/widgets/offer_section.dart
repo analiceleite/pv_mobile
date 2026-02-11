@@ -87,7 +87,7 @@ class _OfferSectionState extends State<OfferSection> {
                       borderRadius: BorderRadius.circular(25),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
+                          color: Colors.grey,
                           blurRadius: 15,
                           offset: const Offset(0, 4),
                         ),
@@ -173,7 +173,7 @@ class _OfferSectionState extends State<OfferSection> {
                             boxShadow: selected
                                 ? [
                                     BoxShadow(
-                                      color: Colors.grey.withOpacity(0.3),
+                                      color: Colors.grey,
                                       blurRadius: 12,
                                       offset: const Offset(0, 4),
                                     ),
@@ -302,7 +302,7 @@ class _OfferSectionState extends State<OfferSection> {
                         boxShadow: _canProceed()
                             ? [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.4),
+                                  color: Colors.grey,
                                   blurRadius: 15,
                                   offset: const Offset(0, 6),
                                 ),
@@ -387,7 +387,7 @@ class _PixDialogState extends State<_PixDialog> {
   @override
   void initState() {
     super.initState();
-    // Gera o código PIX real
+    // Gera o código PIX 
     pixCode = PixService.createPixCode(
       pixKey: widget.pixKey,
       valor: widget.value,

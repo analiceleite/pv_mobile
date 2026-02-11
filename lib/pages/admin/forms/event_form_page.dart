@@ -1,90 +1,84 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_colors.dart';
-import '../../models/grupo_familiar.dart';
-import '../../services/grupo_familiar_service.dart';
+import '../../../models/event.dart';
+import '../../../services/event_service.dart';
 
-class GrupoFormPage extends StatefulWidget {
-  final GrupoFamiliar? grupo;
+class EventFormPage extends StatefulWidget {
+  final Event? culto;
 
-  const GrupoFormPage({super.key, this.grupo});
+  const EventFormPage({super.key, this.culto});
 
   @override
-  State<GrupoFormPage> createState() => _GrupoFormPageState();
+  State<EventFormPage> createState() => _EventFormPageState();
 }
 
-class _GrupoFormPageState extends State<GrupoFormPage> {
+class _EventFormPageState extends State<EventFormPage> {
   final _formKey = GlobalKey<FormState>();
-  final GrupoFamiliarService _grupoService = GrupoFamiliarService();
+  final EventService _eventService = EventService();
 
-  late TextEditingController _nomeController;
-  late TextEditingController _enderecoController;
-  late TextEditingController _liderController;
+  late TextEditingController _diaController;
   late TextEditingController _horarioController;
-  late TextEditingController _whatsappController;
+  late TextEditingController _tituloController;
+  late TextEditingController _descricaoController;
 
-  String _selectedIcon = 'location_city';
-  String _selectedColor = '#1F2937';
+  String _selectedIcon = 'church';
+  String _selectedColor = '#B71C1C';
   bool _isLoading = false;
 
   final Map<String, IconData> _availableIcons = {
-    'location_city': Icons.location_city,
-    'home': Icons.home,
-    'home_work': Icons.home_work,
+    'church': Icons.church,
     'groups': Icons.groups,
+    'favorite': Icons.favorite,
+    'celebration': Icons.celebration,
     'people': Icons.people,
-    'group': Icons.group,
+    'event': Icons.event,
   };
 
   final List<Map<String, String>> _availableColors = [
-    {'name': 'Cinza Escuro', 'hex': '#1F2937'},
-    {'name': 'Cinza Médio', 'hex': '#374151'},
-    {'name': 'Cinza Claro', 'hex': '#4B5563'},
+    {'name': 'Vermelho', 'hex': '#B71C1C'},
+    {'name': 'Laranja', 'hex': '#E65100'},
     {'name': 'Azul', 'hex': '#1565C0'},
     {'name': 'Verde', 'hex': '#2E7D32'},
     {'name': 'Roxo', 'hex': '#6A1B9A'},
+    {'name': 'Cinza Escuro', 'hex': '#424242'},
   ];
 
   @override
   void initState() {
     super.initState();
-    _nomeController = TextEditingController(text: widget.grupo?.nome ?? '');
-    _enderecoController = TextEditingController(
-      text: widget.grupo?.endereco ?? '',
-    );
-    _liderController = TextEditingController(text: widget.grupo?.lider ?? '');
+    _diaController = TextEditingController(text: widget.culto?.dia ?? '');
     _horarioController = TextEditingController(
-      text: widget.grupo?.horario ?? '',
+      text: widget.culto?.horario ?? '',
     );
-    _whatsappController = TextEditingController(
-      text: widget.grupo?.whatsapp ?? '',
+    _tituloController = TextEditingController(text: widget.culto?.titulo ?? '');
+    _descricaoController = TextEditingController(
+      text: widget.culto?.descricao ?? '',
     );
 
-    if (widget.grupo != null) {
-      _selectedIcon = widget.grupo!.iconName;
-      _selectedColor = widget.grupo!.colorHex;
+    if (widget.culto != null) {
+      _selectedIcon = widget.culto!.iconName;
+      _selectedColor = widget.culto!.colorHex;
     }
   }
 
   @override
   void dispose() {
-    _nomeController.dispose();
-    _enderecoController.dispose();
-    _liderController.dispose();
+    _diaController.dispose();
     _horarioController.dispose();
-    _whatsappController.dispose();
+    _tituloController.dispose();
+    _descricaoController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isEditing = widget.grupo != null;
+    final isEditing = widget.culto != null;
 
     return Scaffold(
       backgroundColor: Color(0xFF1F2937),
       appBar: AppBar(
         backgroundColor: Color(0xFF111827),
         foregroundColor: Colors.white,
-        title: Text(isEditing ? 'Editar Grupo' : 'Novo Grupo'),
+        title: Text(isEditing ? 'Editar Culto' : 'Novo Culto'),
         centerTitle: true,
         elevation: 0,
       ),
@@ -101,16 +95,16 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              // Campo Nome
+              // Campo Título
               TextFormField(
-                controller: _nomeController,
+                controller: _tituloController,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: 'Nome do Grupo',
+                  labelText: 'Título do Culto',
                   labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
-                  hintText: 'Ex: Grupo Família Abençoada',
+                  hintText: 'Ex: Culto de Celebração',
                   hintStyle: TextStyle(color: Color(0xFF6B7280)),
-                  prefixIcon: Icon(Icons.group, color: Color(0xFF9CA3AF)),
+                  prefixIcon: Icon(Icons.title, color: Color(0xFF9CA3AF)),
                   filled: true,
                   fillColor: Color(0xFF374151),
                   border: OutlineInputBorder(
@@ -136,23 +130,26 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, informe o nome';
+                    return 'Por favor, informe o título';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
 
-              // Campo Líder
+              // Campo Dia
               TextFormField(
-                controller: _liderController,
+                controller: _diaController,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: 'Líder',
+                  labelText: 'Dia da Semana',
                   labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
-                  hintText: 'Ex: João e Maria Silva',
+                  hintText: 'Ex: Domingo',
                   hintStyle: TextStyle(color: Color(0xFF6B7280)),
-                  prefixIcon: Icon(Icons.person, color: Color(0xFF9CA3AF)),
+                  prefixIcon: Icon(
+                    Icons.calendar_today,
+                    color: Color(0xFF9CA3AF),
+                  ),
                   filled: true,
                   fillColor: Color(0xFF374151),
                   border: OutlineInputBorder(
@@ -178,49 +175,7 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, informe o líder';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // Campo Endereço
-              TextFormField(
-                controller: _enderecoController,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  labelText: 'Endereço',
-                  labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
-                  hintText: 'Ex: Rua das Flores, 123',
-                  hintStyle: TextStyle(color: Color(0xFF6B7280)),
-                  prefixIcon: Icon(Icons.location_on, color: Color(0xFF9CA3AF)),
-                  filled: true,
-                  fillColor: Color(0xFF374151),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0xFF4B5563)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0xFF4B5563)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0xFFDC2626)),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Color(0xFFDC2626), width: 2),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, informe o endereço';
+                    return 'Por favor, informe o dia';
                   }
                   return null;
                 },
@@ -234,7 +189,7 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
                 decoration: InputDecoration(
                   labelText: 'Horário',
                   labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
-                  hintText: 'Ex: Quintas às 19h30',
+                  hintText: 'Ex: 19h00',
                   hintStyle: TextStyle(color: Color(0xFF6B7280)),
                   prefixIcon: Icon(Icons.access_time, color: Color(0xFF9CA3AF)),
                   filled: true,
@@ -269,17 +224,18 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
               ),
               const SizedBox(height: 16),
 
-              // Campo WhatsApp
+              // Campo Descrição
               TextFormField(
-                controller: _whatsappController,
-                keyboardType: TextInputType.phone,
+                controller: _descricaoController,
+                maxLines: 3,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: 'WhatsApp',
+                  labelText: 'Descrição',
                   labelStyle: TextStyle(color: Color(0xFF9CA3AF)),
-                  hintText: 'Ex: https://wa.me/5511999999999',
+                  hintText: 'Descreva brevemente o culto',
                   hintStyle: TextStyle(color: Color(0xFF6B7280)),
-                  prefixIcon: Icon(Icons.phone, color: Color(0xFF9CA3AF)),
+                  prefixIcon: Icon(Icons.description, color: Color(0xFF9CA3AF)),
+                  alignLabelWithHint: true,
                   filled: true,
                   fillColor: Color(0xFF374151),
                   border: OutlineInputBorder(
@@ -305,7 +261,7 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, informe o WhatsApp';
+                    return 'Por favor, informe a descrição';
                   }
                   return null;
                 },
@@ -415,7 +371,7 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: _isLoading ? null : _saveGrupo,
+                      onPressed: _isLoading ? null : _saveCulto,
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         backgroundColor: Color(0xFFDC2626),
@@ -444,7 +400,7 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
     );
   }
 
-  Future<void> _saveGrupo() async {
+  Future<void> _saveCulto() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -452,25 +408,24 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final grupo = GrupoFamiliar(
-        id: widget.grupo?.id,
-        nome: _nomeController.text.trim(),
-        endereco: _enderecoController.text.trim(),
-        lider: _liderController.text.trim(),
+      final event = Event(
+        id: widget.culto?.id,
+        dia: _diaController.text.trim(),
         horario: _horarioController.text.trim(),
-        whatsapp: _whatsappController.text.trim(),
+        titulo: _tituloController.text.trim(),
+        descricao: _descricaoController.text.trim(),
         iconName: _selectedIcon,
         colorHex: _selectedColor,
       );
 
       bool success;
-      if (widget.grupo == null) {
+      if (widget.culto == null) {
         // Criar novo
-        final id = await _grupoService.createGrupo(grupo);
+        final id = await _eventService.createEvent(event);
         success = id != null;
       } else {
         // Atualizar existente
-        success = await _grupoService.updateGrupo(widget.grupo!.id!, grupo);
+        success = await _eventService.updateEvent(widget.culto!.id!, event);
       }
 
       if (mounted) {
@@ -479,7 +434,7 @@ class _GrupoFormPageState extends State<GrupoFormPage> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Erro ao salvar grupo'),
+              content: Text('Erro ao salvar evento'),
               backgroundColor: Color(0xFFDC2626),
             ),
           );
