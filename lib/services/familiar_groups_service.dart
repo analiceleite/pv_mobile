@@ -3,7 +3,7 @@ import '../models/familiar_group.dart';
 
 class FamiliarGroupService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String _collection = 'grupos_familiares';
+  final String _collection = 'familiar_groups';
 
   // Stream para ouvir mudanças em tempo real
   Stream<List<FamiliarGroup>> getGruposStream() {

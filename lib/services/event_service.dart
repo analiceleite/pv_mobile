@@ -3,7 +3,7 @@ import '../models/event.dart';
 
 class EventService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String _collection = 'cultos';
+  final String _collection = 'events';
 
   Stream<List<Event>> getEventsStream() {
     return _firestore.collection(_collection).orderBy('dia').snapshots().map((
