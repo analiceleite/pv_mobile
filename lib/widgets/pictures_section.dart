@@ -31,11 +31,17 @@ class PicturesSection extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       onPressed: () async {
-        if (await canLaunchUrl(Uri.parse(_googleDriveUrl))) {
-          await launchUrl(
-            Uri.parse(_googleDriveUrl),
-            mode: LaunchMode.externalApplication,
-          );
+        final Uri url = Uri.parse(_googleDriveUrl);
+        try {
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+        } catch (e) {
+          debugPrint('Erro ao abrir Google Drive: $e');
+          // Tenta abrir de forma alternativa
+          try {
+            await launchUrl(url);
+          } catch (e2) {
+            debugPrint('Erro alternativo ao abrir Google Drive: $e2');
+          }
         }
       },
       icon: const Icon(Icons.photo_album),

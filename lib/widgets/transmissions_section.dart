@@ -22,8 +22,10 @@ class TransmissionsSection extends StatelessWidget {
         'iconColor': const Color(0xFFFF6B35),
         'onPressed': () async {
           final Uri url = Uri.parse('https://radiorefugio.com.br');
-          if (await canLaunchUrl(url)) {
-            await launchUrl(url, mode: LaunchMode.inAppWebView);
+          try {
+            await launchUrl(url, mode: LaunchMode.externalApplication);
+          } catch (e) {
+            debugPrint('Erro ao abrir rádio: $e');
           }
         },
       },
@@ -42,8 +44,10 @@ class TransmissionsSection extends StatelessWidget {
           final Uri url = Uri.parse(
             'https://www.youtube.com/@comunidadepalavradavida1632/streams',
           );
-          if (await canLaunchUrl(url)) {
-            await launchUrl(url, mode: LaunchMode.inAppWebView);
+          try {
+            await launchUrl(url, mode: LaunchMode.externalApplication);
+          } catch (e) {
+            debugPrint('Erro ao abrir YouTube: $e');
           }
         },
       },
@@ -62,8 +66,10 @@ class TransmissionsSection extends StatelessWidget {
           final Uri url = Uri.parse(
             'https://www.facebook.com/pages/Comunidade%20Crist%C3%A3%20Palavra%20da%20Vida/522804331174409/#',
           );
-          if (await canLaunchUrl(url)) {
-            await launchUrl(url, mode: LaunchMode.inAppWebView);
+          try {
+            await launchUrl(url, mode: LaunchMode.externalApplication);
+          } catch (e) {
+            debugPrint('Erro ao abrir Facebook: $e');
           }
         },
       },
@@ -84,8 +90,10 @@ class TransmissionsSection extends StatelessWidget {
           final Uri url = Uri.parse(
             'https://www.instagram.com/comunidadepalavradavida/',
           );
-          if (await canLaunchUrl(url)) {
-            await launchUrl(url, mode: LaunchMode.inAppWebView);
+          try {
+            await launchUrl(url, mode: LaunchMode.externalApplication);
+          } catch (e) {
+            debugPrint('Erro ao abrir Instagram: $e');
           }
         },
       },
