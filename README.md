@@ -4,6 +4,17 @@ Aplicativo mobile oficial da **Comunidade Cristã Palavra da Vida** - Joinville,
 
 Uma plataforma completa para conectar a comunidade com a igreja, oferecendo acesso a cultos ao vivo, gerenciamento de grupos familiares, agenda de eventos, contribuições via PIX e muito mais.
 
+**Links rápidos**
+
+[![Demo Video](https://img.shields.io/badge/Demo%20Video-Drive-DC2626?style=for-the-badge&logo=google-drive&logoColor=white)](https://drive.google.com/file/d/1AT9xb70VVUzzl5VLfxfCK0ctlXbPz9Pc/view?usp=sharing)
+[![Figma Mockup](https://img.shields.io/badge/Figma-Mockup-0ACF83?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/design/XKCSq21gR0oYINUvmhCGan/PEX---SITE-PV-MOBILE?node-id=1-48&t=pJ7Db5zrsf3SBReT-0)
+
+## 🎬 Demo
+
+<a href="https://drive.google.com/file/d/1AT9xb70VVUzzl5VLfxfCK0ctlXbPz9Pc/view?usp=sharing">
+   <img src="./assets/Cover.png" alt="Demo Video" width="100%" height="400" style="object-fit: cover;" />
+</a>
+
 ---
 
 ## 📱 Sobre o Projeto
@@ -225,49 +236,6 @@ Para testar recursos de geolocalização no emulador Android:
 
 ---
 
-## 🔥 Estrutura do Firebase
-
-### Firestore Collections
-
-#### `events`
-```javascript
-{
-  id: String,
-  data: Timestamp,
-  horario: String,
-  tema: String,
-  pregador: String
-}
-```
-
-#### `grupos_familiares`
-```javascript
-{
-  id: String,
-  nome: String,
-  dia: String,
-  horario: String,
-  endereco: String,
-  responsavel: String,
-  whatsapp: String,
-  latitude: Number,
-  longitude: Number
-}
-```
-
-#### `configuracoes/pix`
-```javascript
-{
-  chavePix: String,
-  nomeTitular: String,
-  banco: String,
-  agencia: String,
-  conta: String,
-  tipoConta: String,
-  tipoPix: String
-}
-```
-
 ### Authentication
 
 - **Email/Password**: Para acesso administrativo
@@ -315,6 +283,8 @@ flutter build ios --release
 ---
 
 ## 🎨 Paleta de Cores
+
+**Mockup no Figma**: https://www.figma.com/design/XKCSq21gR0oYINUvmhCGan/PEX---SITE-PV-MOBILE?node-id=1-48&t=pJ7Db5zrsf3SBReT-0
 
 ```dart
 Primary Red: #DC2626
