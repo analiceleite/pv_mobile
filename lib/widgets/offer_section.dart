@@ -115,7 +115,7 @@ class _OfferSectionState extends State<OfferSection> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Saiba para onde cada recurso está indo, vamos juntos edificar o Reino de Deus.',
+                    'Faça sua contribuição voluntária, vamos juntos edificar o Reino de Deus.',
                     style: TextStyle(fontSize: 18, color: Color(0xFF9CA3AF)),
                     textAlign: TextAlign.center,
                   ),
@@ -387,7 +387,7 @@ class _PixDialogState extends State<_PixDialog> {
   @override
   void initState() {
     super.initState();
-    // Gera o código PIX 
+    // Gera o código PIX
     pixCode = PixService.createPixCode(
       pixKey: widget.pixKey,
       valor: widget.value,
