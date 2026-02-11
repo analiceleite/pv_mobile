@@ -54,17 +54,8 @@ class ContactSection extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
-              ),
+              color: Color(0xFFDC2626),
               borderRadius: BorderRadius.circular(25),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  blurRadius: 15,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
             child: const Text(
               'CONTATO',

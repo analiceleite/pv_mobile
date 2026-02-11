@@ -81,17 +81,8 @@ class _OfferSectionState extends State<OfferSection> {
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
-                      ),
+                      color: Color(0xFFDC2626),
                       borderRadius: BorderRadius.circular(25),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 15,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
                     ),
                     child: const Text(
                       'CONTRIBUIÇÃO',
