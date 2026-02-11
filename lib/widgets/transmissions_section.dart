@@ -15,8 +15,11 @@ class TransmissionsSection extends StatelessWidget {
         'description':
             'Música gospel, pregações inspiradoras e programas especiais que edificam sua fé.',
         'button': 'Ouvir agora',
-        'gradient': [const Color(0xFF1F2937), const Color(0xFF374151)],
-        // Dark Gray
+        'iconGradient': [
+          const Color(0xFFFF6B35),
+          const Color(0xFFF7931E),
+        ], // Laranja vibrante
+        'iconColor': const Color(0xFFFF6B35),
         'onPressed': () async {
           final Uri url = Uri.parse('https://radiorefugio.com.br');
           if (await canLaunchUrl(url)) {
@@ -30,8 +33,11 @@ class TransmissionsSection extends StatelessWidget {
         'description':
             'Assista aos cultos, estudos bíblicos e eventos especiais transmitidos diretamente do templo. Live todo domingo às 18h30.',
         'button': 'Assistir Live',
-        'gradient': [const Color(0xFF111827), const Color(0xFF1F2937)],
-        // Very Dark Gray
+        'iconGradient': [
+          const Color(0xFFFF0000),
+          const Color(0xFFCC0000),
+        ], // Vermelho YouTube
+        'iconColor': const Color(0xFFFF0000),
         'onPressed': () async {
           final Uri url = Uri.parse(
             'https://www.youtube.com/@comunidadepalavradavida1632/streams',
@@ -47,8 +53,11 @@ class TransmissionsSection extends StatelessWidget {
         'description':
             'Receba mensagens inspiradoras, transmissões ao vivo e eventos direto na sua timeline.',
         'button': 'Seguir no Facebook',
-        'gradient': [const Color(0xFF374151), const Color(0xFF4B5563)],
-        // Medium Gray
+        'iconGradient': [
+          const Color(0xFF1877F2),
+          const Color(0xFF0C63D4),
+        ], // Azul Facebook
+        'iconColor': const Color(0xFF1877F2),
         'onPressed': () async {
           final Uri url = Uri.parse(
             'https://www.facebook.com/pages/Comunidade%20Crist%C3%A3%20Palavra%20da%20Vida/522804331174409/#',
@@ -64,8 +73,13 @@ class TransmissionsSection extends StatelessWidget {
         'description':
             'Veja fotos dos cultos, bastidores e momentos especiais da nossa família em Cristo.',
         'button': 'Seguir no Instagram',
-        'gradient': [const Color(0xFF4B5563), const Color(0xFF6B7280)],
-        // Light Gray
+        'iconGradient': [
+          const Color(0xFF833AB4), // Roxo
+          const Color(0xFFC13584), // Rosa
+          const Color(0xFFFD1D1D), // Vermelho
+          const Color(0xFFFCAF45), // Laranja
+        ], // Gradiente Instagram
+        'iconColor': const Color(0xFFE1306C),
         'onPressed': () async {
           final Uri url = Uri.parse(
             'https://www.instagram.com/comunidadepalavradavida/',
@@ -178,13 +192,13 @@ class TransmissionsSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header com gradiente
+          // Header com gradiente colorido
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: item['gradient'] as List<Color>,
+                colors: item['iconGradient'] as List<Color>,
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -199,13 +213,20 @@ class TransmissionsSection extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.25),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: Icon(
                     item['icon'] as IconData,
                     size: 32,
-                    color: Colors.white,
+                    color: item['iconColor'] as Color,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -242,14 +263,13 @@ class TransmissionsSection extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: item['gradient'] as List<Color>,
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
                       ),
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: (item['gradient'] as List<Color>)[0]
-                              .withOpacity(0.4),
+                          color: const Color(0xFFDC2626).withOpacity(0.4),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
