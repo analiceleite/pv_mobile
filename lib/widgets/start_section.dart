@@ -59,10 +59,10 @@ class _MobileLayout extends StatelessWidget {
     // Aproximadamente as posições de cada seção (valores ajustáveis)
     switch (sectionType) {
       case 'transmissoes':
-        targetOffset = 2700; // Transmissões
+        targetOffset = 3450; // Transmissões
         break;
       case 'grupos':
-        targetOffset = 4400; // Grupos Familiares
+        targetOffset = 4950; // Grupos Familiares
         break;
     }
 
@@ -83,7 +83,7 @@ class _MobileLayout extends StatelessWidget {
         _WelcomeText(),
         const SizedBox(height: 40),
         CustomRedButton(
-          text: 'Cultos',
+          text: 'Agenda Semanal',
           onTap: () => _scrollToSection('transmissoes'),
         ),
         const SizedBox(height: 16),
@@ -136,7 +136,7 @@ class _DesktopLayout extends StatelessWidget {
               _WelcomeText(),
               const SizedBox(height: 40),
               CustomRedButton(
-                text: 'Cultos',
+                text: 'Agenda Semanal',
                 onTap: () => _scrollToSection('transmissoes'),
               ),
               const SizedBox(height: 16),
